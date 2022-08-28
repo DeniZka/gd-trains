@@ -16,6 +16,8 @@ var msk_all = 0 # mask that clean wheel uses only this switch elements
 var in_clr_mask = 0
 
 var entered = false
+var body_entered_in = []
+var body_entered_out = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -57,6 +59,12 @@ func flip():
 func _on_switch_body_entered(body):
 	if body.get_meta("part") != "wheel":
 		return
+	
+	#cheking for single way fork
+	if body in body_entered_out:
+		body_entered_out.erase(body)
+	else:
+		body_entered_in.append(body)
 		
 	var mask = body.get_collision_mask()
 	mask = mask & 0xffff
@@ -69,6 +77,15 @@ func _on_switch_body_entered(body):
 func _on_out_body_entered(body):
 	if body.get_meta("part") != "wheel":
 		return
+		
+	#checking for single way fork
+	var true_from_in = false	
+	if body in body_entered_in:
+		true_from_in = true
+		body_entered_in.erase(body)
+	else:
+		body_entered_out.append(body)
+		
 	var mask = body.get_collision_mask()
 	
 	var from_in = mask & msk_in == msk_in
@@ -77,7 +94,7 @@ func _on_out_body_entered(body):
 	
 	if from_in: 
 		print("from in")
-	if from_inactive_out:
+	if from_inactive_out and not true_from_in:
 		#change switch position
 		print("from inactive")
 		flip()
@@ -96,6 +113,7 @@ func _on_out_body_exited(body):
 	pass # Replace with function body.
 
 func _on_button_mouse_entered():
+	print("Entered")
 	entered = true
 
 

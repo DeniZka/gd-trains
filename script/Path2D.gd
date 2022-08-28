@@ -33,6 +33,10 @@ func _ready():
 	#draw curve line
 	var ln: Line2D = Line2D.new()
 	ln.name = "ln"
+	ln.default_color = Color(0.5, 0.5, 0.5, 1) 
+	ln.width = 22
+	ln.texture_mode = 1#  LINE_TEXTURE_TILE
+	ln.texture = load("res://assets/rails.png")
 	add_child(ln)
 	
 	# build collision line over the curve and draw it
@@ -63,7 +67,7 @@ func _ready():
 		cs.position = v
 		
 		sh = CapsuleShape2D.new()
-		sh.radius = 8.2 # 8.5
+		sh.radius = 9.5 # 8.5
 		sh.height = l
 		#sh = RectangleShape2D.new()
 		#sh.extents.x = 8.5

@@ -3,12 +3,12 @@
 [ext_resource path="res://script/switch2w.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=15]
-extents = Vector2( 5, 15 )
+extents = Vector2( 3, 15 )
 
 [sub_resource type="CircleShape2D" id=10]
 
 [sub_resource type="RectangleShape2D" id=16]
-extents = Vector2( 5, 15 )
+extents = Vector2( 2.5, 15 )
 
 [node name="switch2w" type="Area2D"]
 collision_layer = 4294901760
@@ -19,11 +19,12 @@ out_left = 4
 out_right = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -5, 0 )
+position = Vector2( -3, 0 )
 shape = SubResource( 15 )
 
 [node name="button" type="Area2D" parent="."]
 position = Vector2( -34, 35 )
+z_index = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="button"]
 shape = SubResource( 10 )
@@ -41,7 +42,7 @@ collision_layer = 4294901761
 collision_mask = 4294901761
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="out"]
-position = Vector2( 5, 0 )
+position = Vector2( 2.5, 0 )
 shape = SubResource( 16 )
 
 [connection signal="body_entered" from="." to="." method="_on_switch_body_entered"]

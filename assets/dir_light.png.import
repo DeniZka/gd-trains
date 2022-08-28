@@ -2,26 +2,24 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/rails.png-bb292791de41066410dafd1128e35427.s3tc.stex"
-path.etc2="res://.import/rails.png-bb292791de41066410dafd1128e35427.etc2.stex"
+path="res://.import/dir_light.png-3fc1a75f65558ba62929481c6091c190.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/rails.png"
-dest_files=[ "res://.import/rails.png-bb292791de41066410dafd1128e35427.s3tc.stex", "res://.import/rails.png-bb292791de41066410dafd1128e35427.etc2.stex" ]
+source_file="res://assets/dir_light.png"
+dest_files=[ "res://.import/dir_light.png-3fc1a75f65558ba62929481c6091c190.stex" ]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=1
+flags/repeat=0
 flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false

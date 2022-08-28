@@ -102,3 +102,8 @@ func _on_mount_fndr_body_exited(body):
 	if body.get_meta("type") == "loco":
 		vehicle_near = null
 		can_sit = false
+
+
+func _on_Player_body_entered(body):
+	print(body.name)
+	pass # Replace with function body.
