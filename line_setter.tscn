@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://script/line_setter.gd" type="Script" id=1]
+
+[sub_resource type="CircleShape2D" id=9]
+radius = 13.9999
+
+[node name="line_setter" type="Area2D"]
+collision_layer = 4294901760
+collision_mask = 4294901760
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": "This node can change defaul wheel mask to direct line mask.
+This need for switch correct redirecting
+When applied to line body - reads its mask automaticly
+"
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 9 )
+
+[connection signal="body_entered" from="." to="." method="_on_line_setter_body_entered"]

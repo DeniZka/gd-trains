@@ -1,0 +1,63 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://script/hook.gd" type="Script" id=1]
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 15.0
+
+[node name="hook" type="Area2D"]
+collision_layer = 4
+collision_mask = 4
+input_pickable = false
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 4 )
+
+[node name="cplr" type="PinJoint2D" parent="."]
+position = Vector2( 7, 0 )
+
+[node name="uncouple" type="Area2D" parent="."]
+position = Vector2( 7, 0 )
+collision_layer = 8
+collision_mask = 8
+__meta__ = {
+"_editor_description_": "It creates connection between same hook"
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="uncouple"]
+position = Vector2( -1, 0 )
+shape = SubResource( 5 )
+
+[node name="Polygon2D" type="Polygon2D" parent="uncouple"]
+visible = false
+z_index = 100
+polygon = PoolVector2Array( 8, -14, 16, 0, 8, 14, 4, 12, 11, 0, 5, -11 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="uncouple"]
+visible = false
+rotation = 3.14159
+z_index = 100
+polygon = PoolVector2Array( 8, -14, 16, 0, 8, 14, 4, 12, 11, 0, 5, -11 )
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+modulate = Color( 0.203922, 0.203922, 0.203922, 1 )
+z_index = 3
+polygon = PoolVector2Array( 0, -2, 3, -2, 5, -4, 7, -4, 7, -2, 6, 0, 7, 2, 7, 4, 5, 4, 3, 2, 0, 2, 0, 0 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="."]
+modulate = Color( 0.203922, 0.203922, 0.203922, 1 )
+polygon = PoolVector2Array( 0, -11, 1, -11, 2, -12, 2, -13, 3, -13, 4, -12, 4, -8, 3, -7, 2, -7, 2, -8, 1, -9, 0, -9 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="."]
+modulate = Color( 0.203922, 0.203922, 0.203922, 1 )
+scale = Vector2( 1, -1 )
+polygon = PoolVector2Array( 0, -11, 1, -11, 2, -12, 2, -13, 3, -13, 4, -12, 4, -8, 3, -7, 2, -7, 2, -8, 1, -9, 0, -9 )
+
+[connection signal="area_entered" from="." to="." method="_on_hook0_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_hook_area_exited"]
+[connection signal="mouse_entered" from="uncouple" to="." method="_on_uncouple_mouse_entered"]
+[connection signal="mouse_exited" from="uncouple" to="." method="_on_uncouple_mouse_exited"]

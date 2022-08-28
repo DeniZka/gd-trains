@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://wheel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://script/hull.gd" type="Script" id=2]
+[ext_resource path="res://hook.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 51.5, 16 )
+
+[node name="hull" type="RigidBody2D"]
+input_pickable = true
+mass = 178.8
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, 0 )
+shape = SubResource( 1 )
+
+[node name="wheelR1" parent="." instance=ExtResource( 1 )]
+position = Vector2( 40, 14 )
+
+[node name="wheelR2" parent="." instance=ExtResource( 1 )]
+position = Vector2( -40, 14 )
+
+[node name="wheelL1" parent="." instance=ExtResource( 1 )]
+position = Vector2( 40, -14 )
+
+[node name="wheelL2" parent="." instance=ExtResource( 1 )]
+position = Vector2( -41, -14 )
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+modulate = Color( 0.788235, 0.658824, 0.843137, 1 )
+z_index = 5
+polygon = PoolVector2Array( -44, -16, 43, -16, 48, -13, 48, 13, 43, 16, -43, 16, -48, 13, -48, -13 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="."]
+modulate = Color( 0.0784314, 0.027451, 0.509804, 0.741176 )
+z_index = 6
+polygon = PoolVector2Array( 27, -14, 40, -13, 48, 0, 40, 13, 27, 15, 30, 9, 30, -8 )
+
+[node name="hook0" parent="." instance=ExtResource( 3 )]
+position = Vector2( 48, 0 )
+
+[node name="hook1" parent="." instance=ExtResource( 3 )]
+position = Vector2( -48, 0 )
+rotation = 3.14159
+
+[node name="text_pose" type="Node2D" parent="."]
+position = Vector2( -27, -7 )
+scale = Vector2( 1.2, 1.2 )
+z_index = 10
+
+[node name="id" type="Label" parent="text_pose"]
+modulate = Color( 1, 0, 0, 1 )
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0000"
+align = 1
+valign = 2
+
+[node name="dismount_point" type="Node2D" parent="."]
+position = Vector2( 31, -28 )
+
+[connection signal="mouse_entered" from="." to="." method="_on_hull_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_hull_mouse_exited"]

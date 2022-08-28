@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://line_setter.tscn" type="PackedScene" id=2]
+
+[node name="curve_line_setter" type="PathFollow2D"]
+offset = 173.9
+
+[node name="line_setter" parent="." instance=ExtResource( 2 )]

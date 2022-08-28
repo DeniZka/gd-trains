@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://script/switch2w.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=15]
+extents = Vector2( 5, 15 )
+
+[sub_resource type="CircleShape2D" id=10]
+
+[sub_resource type="RectangleShape2D" id=16]
+extents = Vector2( 5, 15 )
+
+[node name="switch2w" type="Area2D"]
+collision_layer = 4294901760
+collision_mask = 4294901760
+input_pickable = false
+script = ExtResource( 1 )
+out_left = 4
+out_right = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -5, 0 )
+shape = SubResource( 15 )
+
+[node name="button" type="Area2D" parent="."]
+position = Vector2( -34, 35 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="button"]
+shape = SubResource( 10 )
+
+[node name="p_circ" type="Polygon2D" parent="button"]
+modulate = Color( 0.219608, 0.564706, 0.298039, 1 )
+position = Vector2( -315, -397 )
+polygon = PoolVector2Array( 311, 388, 315, 387, 319, 388, 322, 390, 324, 393, 325, 396, 324, 401, 321, 405, 317, 407, 315, 407, 311, 406, 308, 404, 306, 401, 305, 397, 306, 393, 308, 390 )
+
+[node name="p_sw" type="Polygon2D" parent="button"]
+polygon = PoolVector2Array( -9, -2, -3, -2, -1, -2, -1, -6, -3, -6, 2, -9, 7, -6, 5, -6, 5, 2, -3, 2, -9, 2 )
+
+[node name="out" type="Area2D" parent="."]
+collision_layer = 4294901761
+collision_mask = 4294901761
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="out"]
+position = Vector2( 5, 0 )
+shape = SubResource( 16 )
+
+[connection signal="body_entered" from="." to="." method="_on_switch_body_entered"]
+[connection signal="mouse_entered" from="button" to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="button" to="." method="_on_button_mouse_exited"]
+[connection signal="body_entered" from="out" to="." method="_on_out_body_entered"]
+[connection signal="body_exited" from="out" to="." method="_on_out_body_exited"]

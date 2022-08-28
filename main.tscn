@@ -1,0 +1,289 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://kraken.tscn" type="PackedScene" id=1]
+[ext_resource path="res://script/Path2D.gd" type="Script" id=2]
+[ext_resource path="res://script/Camera2D.gd" type="Script" id=3]
+[ext_resource path="res://switch.gd" type="Script" id=4]
+[ext_resource path="res://script/Actor.gd" type="Script" id=6]
+[ext_resource path="res://terminator.tscn" type="PackedScene" id=7]
+[ext_resource path="res://script/Player.gd" type="Script" id=8]
+[ext_resource path="res://switch2w.tscn" type="PackedScene" id=9]
+
+[sub_resource type="Curve2D" id=5]
+bake_interval = 40.11
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, -80, 136, -118.566, 21.0224, 118.566, -21.0224, 144, 88, -106.941, 34.4956, 106.941, -34.4956, 448, 0, -280.752, -2.64233, 280.752, 2.64233, 907, -76, 12.8852, -257.059, -12.8852, 257.059, 1325, 243, 168.777, 1.93931, -168.777, -1.93931, 798, 511, 133.281, 6.20174, -133.281, -6.20174, 249, 325 )
+}
+
+[sub_resource type="RectangleShape2D" id=14]
+extents = Vector2( 10.0059, 15.9978 )
+
+[sub_resource type="Curve2D" id=12]
+bake_interval = 53.97
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 249, 330, 0, 0, 0, 0, -338, 329 )
+}
+
+[sub_resource type="RectangleShape2D" id=15]
+extents = Vector2( 15, 15 )
+
+[sub_resource type="CircleShape2D" id=10]
+
+[sub_resource type="Curve2D" id=13]
+bake_interval = 53.98
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 451, 330, -230.566, -2.51984, 230.566, 2.51984, 1116, 329, 4.81034, -348.538, -4.81034, 348.538, 1608, 727, 584.603, 230.566, -584.603, -230.566, 425, 1068 )
+}
+
+[sub_resource type="Curve2D" id=18]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 329, 358, 0, 0, 0, 0, 530, 358 )
+}
+
+[sub_resource type="Curve2D" id=19]
+bake_interval = 31.71
+_data = {
+"points": PoolVector2Array( -114.129, 4.67194, 114.129, -4.67194, 530, 357, -64.0723, -2.00226, 64.0723, 2.00226, 711, 294, 0, 0, 0, 0, 1278, 278 )
+}
+
+[sub_resource type="Curve2D" id=20]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 329, 358, 0, 0, 0, 0, -294, 359 )
+}
+
+[sub_resource type="CircleShape2D" id=16]
+
+[sub_resource type="CircleShape2D" id=17]
+radius = 27.2947
+
+[node name="main" type="Node"]
+
+[node name="lines" type="Node" parent="."]
+
+[node name="c_line" type="Path2D" parent="lines"]
+position = Vector2( 80, 32 )
+curve = SubResource( 5 )
+script = ExtResource( 2 )
+
+[node name="car_poser" type="PathFollow2D" parent="lines/c_line"]
+position = Vector2( 928.995, -75.673 )
+rotation = 0.0226075
+offset = 1036.76
+
+[node name="hull" parent="lines/c_line/car_poser" instance=ExtResource( 1 )]
+car_ID = 10
+
+[node name="car_poser2" type="PathFollow2D" parent="lines/c_line"]
+position = Vector2( -9.64099, 119.242 )
+rotation = -0.222312
+offset = 72.33
+
+[node name="hull" parent="lines/c_line/car_poser2" instance=ExtResource( 1 )]
+rotation = 3.14159
+car_ID = 2
+
+[node name="terminator" type="PathFollow2D" parent="lines/c_line"]
+position = Vector2( -80, 136 )
+rotation = -0.239884
+
+[node name="terminator" type="RigidBody2D" parent="lines/c_line/terminator"]
+rotation = 3.14159
+collision_layer = 3
+collision_mask = 3
+mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="lines/c_line/terminator/terminator"]
+position = Vector2( 10.008, -0.0119324 )
+shape = SubResource( 14 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="lines/c_line/terminator/terminator"]
+modulate = Color( 0.231373, 0.231373, 0.231373, 1 )
+position = Vector2( 4.01392, -0.00863647 )
+polygon = PoolVector2Array( 2.02399, 10.9956, 16.011, 4.96503, 15.9892, -5.03497, 1.9783, -10.0044 )
+
+[node name="Polygon2D" type="Polygon2D" parent="lines/c_line/terminator/terminator"]
+modulate = Color( 0.109804, 0.0901961, 0.0901961, 1 )
+position = Vector2( 0.0140076, 0 )
+polygon = PoolVector2Array( 3.97165, -13.0087, 5.97165, -13.013, 6.98471, -7.01526, 7.0174, 7.98471, 6.02829, 12.9869, 4.02829, 12.9913 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="lines/c_line/terminator/terminator"]
+modulate = Color( 0.203922, 0.203922, 0.203922, 1 )
+position = Vector2( 4.01398, 0.00869751 )
+rotation = 3.14159
+scale = Vector2( 1, -1 )
+polygon = PoolVector2Array( 0, -11, 1, -11, 2, -12, 2, -13, 3, -13, 4, -12, 4, -8, 3, -7, 2, -7, 2, -8, 1, -9, 0, -9 )
+
+[node name="Polygon2D4" type="Polygon2D" parent="lines/c_line/terminator/terminator"]
+modulate = Color( 0.203922, 0.203922, 0.203922, 1 )
+position = Vector2( 4.01398, 0.00869751 )
+rotation = 3.14159
+polygon = PoolVector2Array( 0, -11, 1, -11, 2, -12, 2, -13, 3, -13, 4, -12, 4, -8, 3, -7, 2, -7, 2, -8, 1, -9, 0, -9 )
+
+[node name="c_centr" type="Path2D" parent="lines"]
+position = Vector2( 83, 162 )
+curve = SubResource( 12 )
+script = ExtResource( 2 )
+rail_id = 2
+
+[node name="switch" type="PathFollow2D" parent="lines/c_centr"]
+position = Vector2( 249, 330 )
+rotation = -3.13988
+
+[node name="switch" type="Area2D" parent="lines/c_centr/switch"]
+rotation = 3.14159
+collision_layer = 4294901760
+collision_mask = 4294901760
+input_pickable = false
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="lines/c_centr/switch/switch"]
+rotation = 1.5865
+shape = SubResource( 15 )
+
+[node name="button" type="Area2D" parent="lines/c_centr/switch/switch"]
+position = Vector2( -34, 42 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="lines/c_centr/switch/switch/button"]
+shape = SubResource( 10 )
+
+[node name="p_circ" type="Polygon2D" parent="lines/c_centr/switch/switch/button"]
+modulate = Color( 0.219608, 0.564706, 0.298039, 1 )
+position = Vector2( -315, -397 )
+polygon = PoolVector2Array( 311, 388, 315, 387, 319, 388, 322, 390, 324, 393, 325, 396, 324, 401, 321, 405, 317, 407, 315, 407, 311, 406, 308, 404, 306, 401, 305, 397, 306, 393, 308, 390 )
+
+[node name="p_sw" type="Polygon2D" parent="lines/c_centr/switch/switch/button"]
+polygon = PoolVector2Array( -9, -2, -3, -2, -1, -2, -1, -6, -3, -6, 2, -9, 7, -6, 5, -6, 5, 2, -3, 2, -9, 2 )
+
+[node name="terminator" parent="lines/c_centr" instance=ExtResource( 7 )]
+position = Vector2( -338, 329 )
+rotation = -3.1399
+offset = 586.868
+
+[node name="car_poser2" type="PathFollow2D" parent="lines/c_centr"]
+position = Vector2( -20.4363, 329.541 )
+rotation = -3.13988
+offset = 269.41
+
+[node name="hull" parent="lines/c_centr/car_poser2" instance=ExtResource( 1 )]
+car_ID = 5
+
+[node name="car_poser3" type="PathFollow2D" parent="lines/c_centr"]
+position = Vector2( 87.8549, 329.725 )
+rotation = -3.13988
+offset = 161.1
+
+[node name="hull" parent="lines/c_centr/car_poser3" instance=ExtResource( 1 )]
+rotation = 3.14159
+car_ID = 7
+
+[node name="up" type="Path2D" parent="lines"]
+position = Vector2( 78, 28 )
+curve = SubResource( 13 )
+script = ExtResource( 2 )
+rail_id = 1
+
+[node name="terminator" type="PathFollow2D" parent="lines/up"]
+position = Vector2( 425, 1068 )
+rotation = -2.77739
+offset = 2794.23
+loop = false
+
+[node name="terminator" type="RigidBody2D" parent="lines/up/terminator"]
+mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="lines/up/terminator/terminator"]
+position = Vector2( 10.008, -0.0119324 )
+shape = SubResource( 14 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="lines/up/terminator/terminator"]
+modulate = Color( 0.231373, 0.231373, 0.231373, 1 )
+position = Vector2( 4.01392, -0.00863647 )
+polygon = PoolVector2Array( 2.02399, 10.9956, 16.011, 4.96503, 15.9892, -5.03497, 1.9783, -10.0044 )
+
+[node name="Polygon2D" type="Polygon2D" parent="lines/up/terminator/terminator"]
+modulate = Color( 0.109804, 0.0901961, 0.0901961, 1 )
+position = Vector2( 0.0140076, 0 )
+polygon = PoolVector2Array( 3.97165, -13.0087, 5.97165, -13.013, 6.98471, -7.01526, 7.0174, 7.98471, 6.02829, 12.9869, 4.02829, 12.9913 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="lines/up/terminator/terminator"]
+modulate = Color( 0.203922, 0.203922, 0.203922, 1 )
+position = Vector2( 4.01398, 0.00869751 )
+rotation = 3.14159
+scale = Vector2( 1, -1 )
+polygon = PoolVector2Array( 0, -11, 1, -11, 2, -12, 2, -13, 3, -13, 4, -12, 4, -8, 3, -7, 2, -7, 2, -8, 1, -9, 0, -9 )
+
+[node name="Polygon2D4" type="Polygon2D" parent="lines/up/terminator/terminator"]
+modulate = Color( 0.203922, 0.203922, 0.203922, 1 )
+position = Vector2( 4.01398, 0.00869751 )
+rotation = 3.14159
+polygon = PoolVector2Array( 0, -11, 1, -11, 2, -12, 2, -13, 3, -13, 4, -12, 4, -8, 3, -7, 2, -7, 2, -8, 1, -9, 0, -9 )
+
+[node name="Path2D" type="Path2D" parent="lines"]
+curve = SubResource( 18 )
+script = ExtResource( 2 )
+rail_id = 3
+
+[node name="switch" type="PathFollow2D" parent="lines/Path2D"]
+position = Vector2( 530, 358 )
+offset = 201.036
+loop = false
+
+[node name="switch" parent="lines/Path2D/switch" instance=ExtResource( 9 )]
+
+[node name="Path2D2" type="Path2D" parent="lines"]
+curve = SubResource( 19 )
+script = ExtResource( 2 )
+rail_id = 4
+
+[node name="Path2D3" type="Path2D" parent="lines"]
+curve = SubResource( 20 )
+script = ExtResource( 2 )
+rail_id = 3
+
+[node name="PathFollow2D" type="PathFollow2D" parent="lines/Path2D3"]
+position = Vector2( 151.172, 358.285 )
+rotation = 3.14
+offset = 177.94
+
+[node name="hull" parent="lines/Path2D3/PathFollow2D" instance=ExtResource( 1 )]
+rotation = 3.14159
+
+[node name="terminator" parent="lines/Path2D3" instance=ExtResource( 7 )]
+position = Vector2( -294, 359 )
+rotation = 3.14
+offset = 622.778
+
+[node name="Actor" type="KinematicBody2D" parent="."]
+position = Vector2( 800, 450 )
+z_index = 3
+script = ExtResource( 6 )
+
+[node name="Player" type="RigidBody2D" parent="."]
+position = Vector2( 800, 450 )
+mode = 2
+mass = 0.07
+linear_damp = 60.156
+script = ExtResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource( 16 )
+
+[node name="mount_fndr" type="Area2D" parent="Player"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/mount_fndr"]
+shape = SubResource( 17 )
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+current = true
+script = ExtResource( 3 )
+
+[node name="poly_actor" type="Polygon2D" parent="Player"]
+polygon = PoolVector2Array( 10, 0, -4, -9, -9, 0, -4, 9 )
+
+[connection signal="body_entered" from="lines/c_centr/switch/switch" to="lines/c_centr/switch/switch" method="_on_switch_body_entered"]
+[connection signal="mouse_entered" from="lines/c_centr/switch/switch/button" to="lines/c_centr/switch/switch" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="lines/c_centr/switch/switch/button" to="lines/c_centr/switch/switch" method="_on_button_mouse_exited"]
+[connection signal="body_entered" from="Player/mount_fndr" to="Actor" method="_on_mount_fndr_body_entered"]
+[connection signal="body_entered" from="Player/mount_fndr" to="Player" method="_on_mount_fndr_body_entered"]
+[connection signal="body_exited" from="Player/mount_fndr" to="Actor" method="_on_mount_fndr_body_exited"]
+[connection signal="body_exited" from="Player/mount_fndr" to="Player" method="_on_mount_fndr_body_exited"]
