@@ -23,11 +23,25 @@ position = Vector2( -3, 0 )
 shape = SubResource( 15 )
 
 [node name="button" type="Area2D" parent="."]
-position = Vector2( -34, 35 )
+position = Vector2( 0, 30 )
 z_index = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="button"]
 shape = SubResource( 10 )
+
+[node name="Polygon2D" type="Polygon2D" parent="button"]
+color = Color( 0.262745, 0.184314, 0.184314, 1 )
+polygon = PoolVector2Array( -1, -45, 1, -45, 1, 0, -1, 0 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="button"]
+position = Vector2( 0, 3 )
+color = Color( 0.482353, 0.482353, 0.482353, 1 )
+polygon = PoolVector2Array( -2, -40, 2, -40, 2, -39, -2, -39 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="button"]
+position = Vector2( 0, 15 )
+color = Color( 0.482353, 0.482353, 0.482353, 1 )
+polygon = PoolVector2Array( -2, -40, 2, -40, 2, -39, -2, -39 )
 
 [node name="p_circ" type="Polygon2D" parent="button"]
 modulate = Color( 0.219608, 0.564706, 0.298039, 1 )

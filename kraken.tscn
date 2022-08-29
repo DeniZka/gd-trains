@@ -49,19 +49,6 @@ position = Vector2( 48, 0 )
 position = Vector2( -48, 0 )
 rotation = 3.14159
 
-[node name="text_pose" type="Node2D" parent="."]
-position = Vector2( -27, -7 )
-scale = Vector2( 1.2, 1.2 )
-z_index = 10
-
-[node name="id" type="Label" parent="text_pose"]
-modulate = Color( 1, 0, 0, 1 )
-margin_right = 40.0
-margin_bottom = 14.0
-text = "0000"
-align = 1
-valign = 2
-
 [node name="dismount_point" type="Node2D" parent="."]
 position = Vector2( 31, -28 )
 
@@ -77,15 +64,29 @@ texture_scale = 0.16
 position = Vector2( 2.415, 0 )
 rotation = -1.5708
 scale = Vector2( 0.799, 0.794 )
-z_index = 10
+z_index = 20
 texture = ExtResource( 5 )
 
 [node name="car" type="Sprite" parent="."]
 position = Vector2( 1.44877, -0.817582 )
 rotation = -1.5708
 scale = Vector2( 0.91551, 0.809711 )
-z_index = 10
+z_index = 20
 texture = ExtResource( 6 )
+
+[node name="text_pose" type="Node2D" parent="."]
+position = Vector2( 5, -8 )
+rotation = 1.5708
+scale = Vector2( 0.445, 0.506 )
+z_index = 30
+
+[node name="id" type="Label" parent="text_pose"]
+modulate = Color( 0.0588235, 0.0588235, 0.0588235, 1 )
+margin_right = 38.0
+margin_bottom = 14.0
+text = "0000"
+align = 1
+valign = 2
 
 [connection signal="mouse_entered" from="." to="." method="_on_hull_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_hull_mouse_exited"]

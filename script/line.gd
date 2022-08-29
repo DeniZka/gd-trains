@@ -7,6 +7,7 @@ extends Path2D
 # var b = "text"
 
 export (int, "line1", "line2", "line3", "line4", "line5", "line6", "line7", "line8", "line9", "line10", "line11", "line12", "line13", "line14") var rail_id = 0 setget set_line_clolor, get_line_color
+export (int, "city", "bridge") var rail_type = 0
 var linecolor = 0
 const CARS = ["loco"]
 onready var line_mask = 1 << linecolor + 16
@@ -49,9 +50,12 @@ func _ready():
 	var lnbg: Line2D = Line2D.new()
 	lnbg.name = "ln_bg"
 	lnbg.default_color = Color(0.5, 0.5, 0.5, 1) 
-	lnbg.width = 40
+	lnbg.width = 45
 	lnbg.texture_mode = 1#  LINE_TEXTURE_TILE
-	lnbg.texture = load("res://assets/rail_bridge_a.png")
+	if rail_type == 0:
+		lnbg.texture = load("res://assets/rail_city.png")
+	else:
+		lnbg.texture = load("res://assets/rail_bridge_a.png")
 	lnbg.z_index = 2
 	add_child(lnbg)
 	
@@ -59,7 +63,7 @@ func _ready():
 	var ln: Line2D = Line2D.new()
 	ln.name = "ln"
 	ln.default_color = Color(0.5, 0.5, 0.5, 1) 
-	ln.width = 40
+	ln.width = 45
 	ln.texture_mode = 1#  LINE_TEXTURE_TILE
 	ln.texture = load("res://assets/rail_blades.png")
 	ln.z_index = 3
