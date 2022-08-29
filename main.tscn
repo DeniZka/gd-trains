@@ -87,7 +87,7 @@ offset = 72.33
 
 [node name="hull" parent="lines/c_line/car_poser2" instance=ExtResource( 1 )]
 rotation = 3.14159
-car_ID = 2
+car_ID = 13
 
 [node name="terminator" type="PathFollow2D" parent="lines/c_line"]
 position = Vector2( -80, 136 )
@@ -149,7 +149,7 @@ flip = true
 
 [node name="car_poser2" type="PathFollow2D" parent="lines/c_centr"]
 position = Vector2( -45.9719, 333.302 )
-rotation = -0.00902148
+rotation = -0.00902149
 offset = 279.08
 
 [node name="hull" parent="lines/c_centr/car_poser2" instance=ExtResource( 1 )]
@@ -224,6 +224,7 @@ rotation = -0.000786755
 offset = 586.18
 
 [node name="hull" parent="lines/test/PathFollow2D" instance=ExtResource( 1 )]
+car_ID = 5
 
 [node name="PathFollow2D2" type="PathFollow2D" parent="lines/test"]
 position = Vector2( 330.318, 358.156 )

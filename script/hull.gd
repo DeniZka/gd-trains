@@ -11,6 +11,11 @@ var wheels = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if car_ID > 10:
+		get_node("loco").visible = false
+	else:
+		get_node("car").visible = false
+	
 	wheels.append(get_node("wheelL1"))
 	wheels.append(get_node("wheelL2"))
 	wheels.append(get_node("wheelR1"))
