@@ -63,6 +63,7 @@ func _physics_process(delta):
 	v = v.normalized() * speed
 	if v != Vector2(0, 0):
 		poly.rotation = v.angle()
+		$Node2D.rotation = v.angle() + PI/2
 		
 	#poly.rotate( v.angle() )
 	

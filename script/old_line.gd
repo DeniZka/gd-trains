@@ -37,31 +37,37 @@ func init_set_car_col_mask():
 func _ready():
 	print (linecolor)
 	#create rigid body for curve
+	var rb: StaticBody2D = StaticBody2D.new()
+	rb.name = "rb"
+	#rb.mode = RigidBody2D.MODE_STATIC
 	var mask = 1 << linecolor + 15
-	$sb.set_collision_layer_bit(0, false)
-	$sb.set_collision_mask_bit(0, false)
-	$sb.set_collision_layer_bit(linecolor + 16, true)
-	$sb.set_collision_mask_bit(linecolor + 16, true)
+	rb.set_collision_layer_bit(0, false)
+	rb.set_collision_mask_bit(0, false)
+	rb.set_collision_layer_bit(linecolor + 16, true)
+	rb.set_collision_mask_bit(linecolor + 16, true)
+	add_child(rb)
 	
-#	var $lnbg: Line2D = Line2D.new()
-	$lnbg.default_color = Color(0.5, 0.5, 0.5, 1) 
-	$lnbg.width = 45
-	$lnbg.texture_mode = 1#  LINE_TEXTURE_TILE
+	var lnbg: Line2D = Line2D.new()
+	lnbg.name = "ln_bg"
+	lnbg.default_color = Color(0.5, 0.5, 0.5, 1) 
+	lnbg.width = 45
+	lnbg.texture_mode = 1#  LINE_TEXTURE_TILE
 	if rail_type == 0:
-		$lnbg.texture = load("res://assets/rail_city.png")
+		lnbg.texture = load("res://assets/rail_city.png")
 	else:
-		$lnbg.texture = load("res://assets/rail_bridge_a.png")
-	$lnbg.z_index = 2
-#	add_child(lnbg)
+		lnbg.texture = load("res://assets/rail_bridge_a.png")
+	lnbg.z_index = 2
+	add_child(lnbg)
 	
 	#draw curve line
-#	var ln: Line2D = Line2D.new()
-	$blade.default_color = Color(0.5, 0.5, 0.5, 1) 
-	$blade.width = 45
-	$blade.texture_mode = 1#  LINE_TEXTURE_TILE
-	$blade.texture = load("res://assets/rail_blades.png")
-	$blade.z_index = 3
-#	add_child(ln)
+	var ln: Line2D = Line2D.new()
+	ln.name = "ln"
+	ln.default_color = Color(0.5, 0.5, 0.5, 1) 
+	ln.width = 45
+	ln.texture_mode = 1#  LINE_TEXTURE_TILE
+	ln.texture = load("res://assets/rail_blades.png")
+	ln.z_index = 3
+	add_child(ln)
 	
 	# build collision line over the curve and draw it
 	var bpts: PoolVector2Array = curve.get_baked_points()
@@ -69,8 +75,8 @@ func _ready():
 	#var ln: Line2D = get_node("ln")
 	#var ln: Line2D = Line2D.new()
 	#add_child(ln)
-	$blade.set_points(bpts)
-	$lnbg.set_points(bpts)
+	ln.set_points(bpts)
+	lnbg.set_points(bpts)
 	#print(bpts)
 	
 	#create capsules
@@ -82,7 +88,7 @@ func _ready():
 	
 	for i in bpts.size() - 1:
 		cs = CollisionShape2D.new()
-		$sb.add_child(cs)
+		rb.add_child(cs)
 		#calc middle point to place shape there
 		v = (bpts[i+1] - bpts[i]) / 2
 		var l = v.length() * 2 
@@ -96,7 +102,7 @@ func _ready():
 		sh.height = l
 		#sh = RectangleShape2D.new()
 		#sh.extents.x = 8.5
-		#sh.extents.y = l / 2ln
+		#sh.extents.y = l / 2
 		cs.shape = sh
 
 	#line masking
@@ -109,11 +115,3 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-
-
-func _on_l_draw():
-	print($sb.get_child_count())
-	if $sb.get_child_count() > 0:
-		print($sb.get_child(0))
-	print("draw")
-	pass # Replace with function body.

@@ -7,6 +7,9 @@ extents = Vector2( 10.0059, 15.9978 )
 
 [node name="terminator" type="PathFollow2D"]
 offset = 586.84
+cubic_interp = false
+loop = false
+lookahead = 0.001
 script = ExtResource( 1 )
 
 [node name="terminator" type="RigidBody2D" parent="."]

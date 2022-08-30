@@ -1,18 +1,30 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://assets/GTA2_PED_77.bmp" type="Texture" id=1]
+[ext_resource path="res://assets/char.png" type="Texture" id=1]
+[ext_resource path="res://scriptwalk.tres" type="Animation" id=2]
 
-[sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
-uniform sampler2D palette;
-uniform int palettesize = 16;"
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
-shader_param/palettesize = 16
+[sub_resource type="Animation" id=1]
+resource_name = "stand"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 0,
+"values": [  ]
+}
 
 [node name="Node" type="Node"]
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 2 )
 texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 108, 24, 47, 66 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/stand = SubResource( 1 )
+anims/walk = ExtResource( 2 )

@@ -1,0 +1,29 @@
+[gd_resource type="Animation" format=2]
+
+[resource]
+resource_name = "walk"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5, 2 ),
+"transitions": PoolRealArray( 5.46414e-05, 5.31342e-05, 1e-05, 1e-05, 1e-05 ),
+"update": 0,
+"values": [ Rect2( 7, 207, 48, 32 ), Rect2( 108, 24, 47, 66 ), Rect2( 7, 207, 48, 32 ), Rect2( 108, 24, 47, 66 ), Rect2( 7, 207, 48, 32 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1e-05, 1e-05 ),
+"update": 1,
+"values": [ false, true ]
+}
