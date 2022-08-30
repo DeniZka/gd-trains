@@ -18,8 +18,14 @@ func coll_on_off(status):
 	set_collision_layer_bit(0, status)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	if Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down"):
+		$Node2D/AnimationPlayer.play("scriptwalk")
+	else:
+		$Node2D/AnimationPlayer.play("stand")
+	pass
+	
+
 func _physics_process(delta):
 	if Input.is_action_just_pressed("mount"):
 		if not mounted and vehicle_near:

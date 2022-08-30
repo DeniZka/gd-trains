@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://kraken.tscn" type="PackedScene" id=1]
 [ext_resource path="res://script/old_line.gd" type="Script" id=2]
@@ -11,6 +11,8 @@
 [ext_resource path="res://scriptwalk.tres" type="Animation" id=9]
 [ext_resource path="res://line.tscn" type="PackedScene" id=10]
 [ext_resource path="res://assets/char.png" type="Texture" id=11]
+[ext_resource path="res://assets/house/GTATIL1_90.bmp" type="Texture" id=12]
+[ext_resource path="res://assets/house/GTATIL1_91.bmp" type="Texture" id=13]
 
 [sub_resource type="Curve2D" id=5]
 bake_interval = 40.11
@@ -50,6 +52,7 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id=16]
+radius = 7.0
 
 [sub_resource type="CircleShape2D" id=17]
 radius = 27.2947
@@ -96,6 +99,10 @@ tracks/1/keys = {
 "update": 1,
 "values": [ false, true ]
 }
+
+[sub_resource type="CubeMesh" id=23]
+custom_aabb = AABB( 0.068, 0, 0, 0, 0, 0 )
+size = Vector3( 1, 1, 1 )
 
 [node name="main" type="Node"]
 
@@ -212,7 +219,6 @@ car_ID = 7
 
 [node name="sw" parent="lines/c_centr" instance=ExtResource( 6 )]
 position = Vector2( 816, 379 )
-rotation = -0.0312398
 offset = 1150.62
 main_line_dir = 2
 flip = true
@@ -326,6 +332,7 @@ shape = SubResource( 17 )
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 current = true
+zoom = Vector2( 0.7, 0.7 )
 script = ExtResource( 3 )
 
 [node name="poly_actor" type="Polygon2D" parent="Player"]
@@ -333,7 +340,7 @@ visible = false
 polygon = PoolVector2Array( 10, 0, -4, -9, -9, 0, -4, 9 )
 
 [node name="Node2D" type="Node2D" parent="Player"]
-scale = Vector2( 0.5, 0.5 )
+scale = Vector2( 0.3, 0.3 )
 
 [node name="Sprite" type="Sprite" parent="Player/Node2D"]
 texture = ExtResource( 11 )
@@ -341,17 +348,39 @@ region_enabled = true
 region_rect = Rect2( 7, 207, 48, 32 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Player/Node2D"]
+autoplay = "scriptwalk"
 anims/scriptwalk = ExtResource( 9 )
 anims/stand = SubResource( 21 )
 anims/walk = SubResource( 22 )
 
 [node name="Light2D" type="Light2D" parent="."]
-position = Vector2( 600, 653 )
+position = Vector2( 800, 450 )
 texture = ExtResource( 5 )
 texture_scale = 0.5
 color = Color( 0.713726, 0.537255, 0.227451, 1 )
 
 [node name="Line2D" type="Line2D" parent="."]
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Polygon2D" type="Polygon2D" parent="Node2D"]
+position = Vector2( 1, 0 )
+texture = ExtResource( 12 )
+polygon = PoolVector2Array( -45, 10, 24, 45, 25, 63, -22, 39 )
+uv = PoolVector2Array( -0.274925, 0.012886, 64.4263, 0.517752, 63.6669, 62.3504, 0.770378, 62.3822 )
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Node2D"]
+position = Vector2( -22.0625, -49.25 )
+scale = Vector2( 59.0625, 44.25 )
+mesh = SubResource( 23 )
+texture = ExtResource( 12 )
+
+[node name="Sprite" type="Sprite" parent="Node2D"]
+
+[node name="Polygon2D2" type="Polygon2D" parent="Node2D"]
+texture = ExtResource( 13 )
+polygon = PoolVector2Array( 54, 4, 25, 45, 26, 62, 50, 32 )
+uv = PoolVector2Array( 0.0434113, 0.00761032, 63.4179, 0.419128, 63.8294, 62.5591, 0.454941, 63.5878 )
 
 [connection signal="body_entered" from="Player" to="Player" method="_on_Player_body_entered"]
 [connection signal="body_entered" from="Player/mount_fndr" to="Player" method="_on_mount_fndr_body_entered"]
