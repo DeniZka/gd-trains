@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://kraken.tscn" type="PackedScene" id=1]
 [ext_resource path="res://script/old_line.gd" type="Script" id=2]
@@ -7,12 +7,12 @@
 [ext_resource path="res://assets/light.png" type="Texture" id=5]
 [ext_resource path="res://sw.tscn" type="PackedScene" id=6]
 [ext_resource path="res://terminator.tscn" type="PackedScene" id=7]
-[ext_resource path="res://script/Player.gd" type="Script" id=8]
-[ext_resource path="res://scriptwalk.tres" type="Animation" id=9]
+[ext_resource path="res://actor.tscn" type="PackedScene" id=8]
 [ext_resource path="res://line.tscn" type="PackedScene" id=10]
-[ext_resource path="res://assets/char.png" type="Texture" id=11]
 [ext_resource path="res://assets/house/GTATIL1_90.bmp" type="Texture" id=12]
 [ext_resource path="res://assets/house/GTATIL1_91.bmp" type="Texture" id=13]
+[ext_resource path="res://script/turn_table.gd" type="Script" id=14]
+[ext_resource path="res://table_tip.tscn" type="PackedScene" id=15]
 
 [sub_resource type="Curve2D" id=5]
 bake_interval = 40.11
@@ -41,6 +41,7 @@ _data = {
 }
 
 [sub_resource type="Curve2D" id=19]
+bake_interval = 53.97
 _data = {
 "points": PoolVector2Array( -139.924, 0.703438, 139.924, -0.703438, 530, 357, -65.6615, 0.116666, 65.6615, -0.116666, 726, 300, 0, 0, 0, 0, 1282, 299 )
 }
@@ -51,53 +52,22 @@ _data = {
 "points": PoolVector2Array( -111.362, 155.016, 111.362, -155.016, -366, 683, 0, 0, 0, 0, 588, 560 )
 }
 
-[sub_resource type="CircleShape2D" id=16]
-radius = 7.0
-
-[sub_resource type="CircleShape2D" id=17]
-radius = 27.2947
-
-[sub_resource type="Animation" id=21]
-resource_name = "stand"
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:region_rect")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1e-05 ),
-"update": 0,
-"values": [ Rect2( 7, 207, 48, 32 ) ]
+[sub_resource type="Curve2D" id=25]
+bake_interval = 67.33
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 131, -1, -48.695, -1.87288, 48.695, 1.87288, 439, -1, -38.5814, 14.6085, 38.5814, -14.6085, 676, -17 )
 }
 
-[sub_resource type="Animation" id=22]
-resource_name = "walk"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:region_rect")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5, 1, 1.5, 2 ),
-"transitions": PoolRealArray( 5.46414e-05, 5.31342e-05, 1e-05, 1e-05, 1e-05 ),
-"update": 0,
-"values": [ Rect2( 7, 207, 48, 32 ), Rect2( 108, 24, 47, 66 ), Rect2( 7, 207, 48, 32 ), Rect2( 108, 24, 47, 66 ), Rect2( 7, 207, 48, 32 ) ]
+[sub_resource type="Curve2D" id=26]
+bake_interval = 80.69
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 123, -49, -35.9188, 15.7145, 35.9188, -15.7145, 372, -160, -63.9803, 0.561231, 63.9803, -0.561231, 623, -199, -127, -12, 127, 12, 1278, -157, -273.341, 19.0703, 273.341, -19.0703, 2201, -60, 0, 0, 0, 0, 2884, -234 )
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1e-05, 1e-05 ),
-"update": 1,
-"values": [ false, true ]
+
+[sub_resource type="Curve2D" id=24]
+bake_interval = 125.21
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, -130, -1, 0, 0, 0, 0, 129, -1 )
 }
 
 [sub_resource type="CubeMesh" id=23]
@@ -108,10 +78,10 @@ size = Vector3( 1, 1, 1 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
 self_modulate = Color( 0.482353, 0.482353, 0.482353, 1 )
-margin_left = -1010.0
-margin_top = -1010.0
-margin_right = 48990.0
-margin_bottom = 48990.0
+margin_left = -994.0
+margin_top = -1003.0
+margin_right = 49006.0
+margin_bottom = 48997.0
 mouse_filter = 2
 texture = ExtResource( 4 )
 stretch_mode = 2
@@ -126,15 +96,6 @@ curve = SubResource( 5 )
 script = ExtResource( 2 )
 rail_type = 1
 
-[node name="car_poser" type="PathFollow2D" parent="lines/c_line"]
-position = Vector2( 928.995, -75.673 )
-rotation = 0.0226075
-offset = 1036.76
-
-[node name="hull" parent="lines/c_line/car_poser" instance=ExtResource( 1 )]
-position = Vector2( 0.133484, 5.67142 )
-car_ID = 11
-
 [node name="car_poser2" type="PathFollow2D" parent="lines/c_line"]
 position = Vector2( -9.64099, 119.242 )
 rotation = -0.222312
@@ -142,7 +103,9 @@ offset = 72.33
 
 [node name="hull" parent="lines/c_line/car_poser2" instance=ExtResource( 1 )]
 rotation = 3.14159
+mountable = false
 car_ID = 13
+got_engine = false
 
 [node name="terminator" type="PathFollow2D" parent="lines/c_line"]
 position = Vector2( -80, 136 )
@@ -185,6 +148,7 @@ polygon = PoolVector2Array( 0, -11, 1, -11, 2, -12, 2, -13, 3, -13, 4, -12, 4, -
 position = Vector2( 242.004, 325 )
 rotation = -3.04664
 offset = 2881.95
+this_line_dir = 2
 flip = true
 
 [node name="c_centr" type="Path2D" parent="lines"]
@@ -215,7 +179,22 @@ offset = 170.77
 
 [node name="hull" parent="lines/c_centr/car_poser3" instance=ExtResource( 1 )]
 rotation = 3.14159
-car_ID = 7
+mass = 14.67
+mountable = false
+car_ID = 13
+got_engine = false
+
+[node name="car_poser4" type="PathFollow2D" parent="lines/c_centr"]
+position = Vector2( -264.65, 334.679 )
+rotation = 0.00164845
+offset = 60.4
+
+[node name="hull" parent="lines/c_centr/car_poser4" instance=ExtResource( 1 )]
+rotation = 3.14159
+mass = 14.67
+mountable = false
+car_ID = 14
+got_engine = false
 
 [node name="sw" parent="lines/c_centr" instance=ExtResource( 6 )]
 position = Vector2( 816, 379 )
@@ -278,6 +257,7 @@ rotation = -0.215213
 offset = 382.03
 
 [node name="hull" parent="lines/test/PathFollow2D" instance=ExtResource( 1 )]
+rotation = 3.14159
 car_ID = 5
 
 [node name="terminator" parent="lines/test" instance=ExtResource( 7 )]
@@ -287,17 +267,47 @@ offset = 0.0
 flip = true
 
 [node name="Path2D2" type="Path2D" parent="lines"]
-self_modulate = Color( 0.678431, 0.137255, 0.137255, 0.666667 )
+self_modulate = Color( 1, 0.803922, 0.952941, 0.666667 )
 curve = SubResource( 19 )
 script = ExtResource( 2 )
-rail_id = 4
 rail_type = 1
 
 [node name="sw" parent="lines/Path2D2" instance=ExtResource( 6 )]
 position = Vector2( 530, 357 )
+rotation = -0.154997
 default_active_line = 1
 
+[node name="table_tip" parent="lines/Path2D2" instance=ExtResource( 15 )]
+position = Vector2( 1282, 299 )
+rotation = 3.13965
+offset = 763.95
+
+[node name="car_poser5" type="PathFollow2D" parent="lines/Path2D2"]
+position = Vector2( 1203.37, 299.142 )
+rotation = -0.00180144
+offset = 682.23
+
+[node name="hull" parent="lines/Path2D2/car_poser5" instance=ExtResource( 1 )]
+rotation = 3.14159
+mass = 14.67
+mountable = false
+car_ID = 15
+got_engine = false
+
+[node name="car_poser6" type="PathFollow2D" parent="lines/Path2D2"]
+position = Vector2( 1093.34, 299.34 )
+rotation = -0.00180021
+offset = 574.25
+
+[node name="hull" parent="lines/Path2D2/car_poser6" instance=ExtResource( 1 )]
+rotation = 3.14159
+mass = 14.67
+mountable = false
+car_ID = 15
+got_engine = false
+
 [node name="line" parent="lines" instance=ExtResource( 10 )]
+self_modulate = Color( 1, 0.803922, 0.952941, 0.666667 )
 curve = SubResource( 20 )
 
 [node name="terminator" parent="lines/line" instance=ExtResource( 7 )]
@@ -309,49 +319,55 @@ flip = true
 [node name="sw" parent="lines/line" instance=ExtResource( 6 )]
 position = Vector2( 585.185, 559.904 )
 offset = 974.16
+main_line_dir = 2
 default_active_line = 1
 flip = true
 
-[node name="Player" type="RigidBody2D" parent="."]
+[node name="to_turn_table" parent="lines" instance=ExtResource( 10 )]
+self_modulate = Color( 1, 0.933333, 0.2, 0.666667 )
+curve = SubResource( 25 )
+rail_id = 2
+
+[node name="sw__" parent="lines/to_turn_table" instance=ExtResource( 6 )]
+position = Vector2( 675.93, -16.9779 )
+rotation = -0.310459
+scale = Vector2( 1, 1 )
+offset = 546.09
+this_line_dir = 2
+main_line_dir = 1
+default_active_line = 1
+flip = true
+
+[node name="table_tip" parent="lines/to_turn_table" instance=ExtResource( 15 )]
+position = Vector2( 131, -1 )
+rotation = -0.00613644
+
+[node name="car_poser" type="PathFollow2D" parent="lines/to_turn_table"]
+position = Vector2( 342.141, -1.82978 )
+rotation = 9.21737e-05
+offset = 211.12
+
+[node name="hull" parent="lines/to_turn_table/car_poser" instance=ExtResource( 1 )]
+position = Vector2( 0.133484, 5.67142 )
+car_ID = 11
+got_engine = false
+
+[node name="l" parent="lines" instance=ExtResource( 10 )]
+self_modulate = Color( 1, 0.933333, 0.2, 0.666667 )
+curve = SubResource( 26 )
+rail_id = 2
+
+[node name="table_tip" parent="lines/l" instance=ExtResource( 15 )]
+position = Vector2( 123, -49 )
+rotation = -0.420293
+
+[node name="Player" parent="." instance=ExtResource( 8 )]
 position = Vector2( 800, 450 )
-z_index = 10
-mode = 2
-mass = 0.07
-contacts_reported = 1
-contact_monitor = true
-linear_damp = 60.156
-script = ExtResource( 8 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-shape = SubResource( 16 )
-
-[node name="mount_fndr" type="Area2D" parent="Player"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/mount_fndr"]
-shape = SubResource( 17 )
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 current = true
-zoom = Vector2( 0.7, 0.7 )
+zoom = Vector2( 0.6, 0.6 )
 script = ExtResource( 3 )
-
-[node name="poly_actor" type="Polygon2D" parent="Player"]
-visible = false
-polygon = PoolVector2Array( 10, 0, -4, -9, -9, 0, -4, 9 )
-
-[node name="Node2D" type="Node2D" parent="Player"]
-scale = Vector2( 0.3, 0.3 )
-
-[node name="Sprite" type="Sprite" parent="Player/Node2D"]
-texture = ExtResource( 11 )
-region_enabled = true
-region_rect = Rect2( 7, 207, 48, 32 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/Node2D"]
-autoplay = "scriptwalk"
-anims/scriptwalk = ExtResource( 9 )
-anims/stand = SubResource( 21 )
-anims/walk = SubResource( 22 )
 
 [node name="Light2D" type="Light2D" parent="."]
 position = Vector2( 800, 450 )
@@ -360,8 +376,33 @@ texture_scale = 0.5
 color = Color( 0.713726, 0.537255, 0.227451, 1 )
 
 [node name="Line2D" type="Line2D" parent="."]
+visible = false
+
+[node name="turn_table" type="Node2D" parent="."]
+rotation = -0.656244
+scale = Vector2( 1, 1 )
+script = ExtResource( 14 )
+
+[node name="bg" type="Polygon2D" parent="turn_table"]
+self_modulate = Color( 0.552941, 0.552941, 0.552941, 1 )
+texture = ExtResource( 4 )
+texture_scale = Vector2( 1.3, 1.3 )
+polygon = PoolVector2Array( -130, 2, -125, -31, -113, -64, -93, -91, -65, -112, -34, -125, 0, -130, 33, -126, 65, -113, 92, -91, 112, -65, 126, -33, 130, 0, 126, 34, 114, 65, 92, 93, 66, 113, 35, 126, 0, 131, -34, 126, -65, 114, -92, 93, -112, 67, -126, 34 )
+uv = PoolVector2Array( -130, 2, -125, -31, -113, -64, -93, -91, -65, -112, -34, -125, 0, -130, 33, -126, 65, -113, 92, -91, 112, -65, 126, -33, 130, 0, 126, 34, 114, 65, 92, 93, 66, 113, 35, 126, 0, 131, -34, 126, -65, 114, -92, 93, -112, 67, -126, 34 )
+
+[node name="l" parent="turn_table" instance=ExtResource( 10 )]
+self_modulate = Color( 1, 0.933333, 0.2, 0.666667 )
+curve = SubResource( 24 )
+rail_id = 2
+
+[node name="table_tip" parent="turn_table/l" instance=ExtResource( 15 )]
+position = Vector2( 128.954, -1 )
+offset = 258.94
+cubic_interp = false
+loop = false
 
 [node name="Node2D" type="Node2D" parent="."]
+visible = false
 
 [node name="Polygon2D" type="Polygon2D" parent="Node2D"]
 position = Vector2( 1, 0 )
@@ -382,6 +423,4 @@ texture = ExtResource( 13 )
 polygon = PoolVector2Array( 54, 4, 25, 45, 26, 62, 50, 32 )
 uv = PoolVector2Array( 0.0434113, 0.00761032, 63.4179, 0.419128, 63.8294, 62.5591, 0.454941, 63.5878 )
 
-[connection signal="body_entered" from="Player" to="Player" method="_on_Player_body_entered"]
-[connection signal="body_entered" from="Player/mount_fndr" to="Player" method="_on_mount_fndr_body_entered"]
-[connection signal="body_exited" from="Player/mount_fndr" to="Player" method="_on_mount_fndr_body_exited"]
+[connection signal="on_tip_met" from="turn_table/l/table_tip" to="turn_table" method="_on_table_tip_on_tip_met"]

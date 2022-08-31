@@ -6,7 +6,7 @@ var poly: Polygon2D = null
 var mounted = null
 var look_at = Vector2(1, 0)
 var can_sit = false
-var vehicle_near = null
+var vehicle_near = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -25,27 +25,33 @@ func _process(delta):
 		$Node2D/AnimationPlayer.play("stand")
 	pass
 	
-
-func _physics_process(delta):
 	if Input.is_action_just_pressed("mount"):
-		if not mounted and vehicle_near:
-			var vv = vehicle_near # or will be null :( bug???
-			coll_on_off(false)
-			#get_parent().remove_child(self)
-			#vv.add_child(self)
-			mounted = vv
-			position = Vector2(0, 0)
+		if not mounted and vehicle_near.size() > 0:
+			var vv = vehicle_near[0] # or will be null :( bug???
+			if vv.mountable:
+				vv.mount(self)
+				coll_on_off(false)
+				mounted = vv
+				position = Vector2(0, 0)
+				$interact.monitorable = false
+				#vv.print_mask()
 			
 		elif mounted:
 			#position = mounted.get_node("dismount_point").position
+			mounted.umount(self)
 			set_linear_velocity(Vector2(0, 0))
 			position
 			set_rotation(0)
 			coll_on_off(true)
 			#var main: Node = get_node("/root/main")
-			#get_parent().remove_child(self)
+			#get_parent().remset_linear_velocityove_child(self)
 			#main.add_child(self)
 			mounted = null	
+			$interact.monitorable = true	
+	
+
+func _physics_process(delta):
+
 	
 	rotation = 0
 	var v: Vector2 = Vector2(0, 0)
@@ -58,17 +64,16 @@ func _physics_process(delta):
 			v.y += -1
 		if Input.is_action_pressed("ui_down"):
 			v.y += 1
-	else:
-		mounted.no_force()
-		if Input.is_action_pressed("ui_up"):
-			mounted.accelerate()
-		if Input.is_action_pressed("ui_down"):
-			mounted.decelerate()
+			
+			
+#	else:
+
 		
 	#rotate poly only when walking	
 	v = v.normalized() * speed
+	#do not turn while just stand
 	if v != Vector2(0, 0):
-		poly.rotation = v.angle()
+		$shadow.rotation = v.angle() + PI/2
 		$Node2D.rotation = v.angle() + PI/2
 		
 	#poly.rotate( v.angle() )
@@ -93,21 +98,21 @@ func _physics_process(delta):
 			
 	set_applied_force(v * speed)
 	var lvel: Vector2 = get_linear_velocity() 
-	if ( lvel.length_squared() > (speed * speed) ):
-		lvel = lvel.normalized() * speed
+	if ( lvel.length_squared() > (30 * 30) ):
+		lvel = lvel.normalized() * 30
 		set_linear_velocity(lvel)
 	
 
 
 func _on_mount_fndr_body_entered(body):
 	if body.get_meta("type") == "loco":
-		vehicle_near = body
+		vehicle_near.append(body)
 		print("can sit")
 
 
 func _on_mount_fndr_body_exited(body):
 	if body.get_meta("type") == "loco":
-		vehicle_near = null
+		vehicle_near.erase(body)
 		can_sit = false
 
 

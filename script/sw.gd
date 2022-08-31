@@ -8,6 +8,7 @@ export (int, "forward", "Left", "righT") var main_line_dir = 0 setget set_main_l
 export (int, "MAIN", "SPLIT") var default_active_line = 0 setget set_sel_line, get_sel_line
 export (bool) var flip = false setget set_flip_switch, get_flip_switch
 var m_entered = false
+var can_interact = false
 var zoom = 1.0
 
 var body_entered_in = []
@@ -79,12 +80,16 @@ func _ready():
 	line_ids[LINE_SPLIT] = get_parent().get_rail_id()
 	line_masks[LINE_SPLIT] = 1 << (line_ids[LINE_SPLIT] + 16)
 	pass # Replace with function body.
+	
 func _process(delta):
 	if m_entered:
 		if Input.is_action_just_pressed("LMB"):
 			switch_line()
+	if can_interact:
+		if Input.is_action_just_pressed("interact"):
+			switch_line()
+		
 #	pass
-
 func set_zoom():
 	if $rot:
 		$rot/strait.scale = Vector2(zoom, zoom)
@@ -168,3 +173,17 @@ func _on_out_body_entered(body):
 	mask = mask | line_masks[sel_line]
 	#print("set out mask 0x%04x" % (mask >> 16))
 	body.set_collision_mask(mask)
+
+
+func _on_sensor_area_entered(area):
+	if area.name == "interact":
+		can_interact = true
+		zoom = ZOOM_FACTOR
+		set_zoom()
+
+
+func _on_sensor_area_exited(area):
+	if area.name == "interact":
+		can_interact = false
+		zoom = 1.0
+		set_zoom()

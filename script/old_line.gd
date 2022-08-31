@@ -35,7 +35,7 @@ func init_set_car_col_mask():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print (linecolor)
+	#print (linecolor)
 	#create rigid body for curve
 	var rb: StaticBody2D = StaticBody2D.new()
 	rb.name = "rb"

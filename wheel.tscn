@@ -10,7 +10,7 @@ radius = 5.0
 
 [node name="wheel" type="RigidBody2D"]
 collision_layer = 0
-collision_mask = 2147418112
+collision_mask = 0
 mass = 127.23
 physics_material_override = SubResource( 3 )
 script = ExtResource( 1 )
@@ -25,4 +25,4 @@ polygon = PoolVector2Array( 0, -8, 6, -5, 8, 0, 6, 6, 0, 8, -6, 5, -8, 0, -5, -6
 [node name="PinJoint2D" type="PinJoint2D" parent="."]
 node_a = NodePath("..")
 node_b = NodePath("../..")
-softness = 0.1
+softness = 0.02
