@@ -169,7 +169,7 @@ position = Vector2( -45.9719, 333.302 )
 rotation = -0.00902149
 offset = 279.08
 
-[node name="hull" parent="lines/c_centr/car_poser2" instance=ExtResource( 1 )]
+[node name="loco" parent="lines/c_centr/car_poser2" instance=ExtResource( 1 )]
 car_ID = 5
 
 [node name="car_poser3" type="PathFollow2D" parent="lines/c_centr"]
@@ -274,17 +274,17 @@ rail_type = 1
 
 [node name="sw" parent="lines/Path2D2" instance=ExtResource( 6 )]
 position = Vector2( 530, 357 )
-rotation = -0.154997
+rotation = -0.0624188
 default_active_line = 1
 
 [node name="table_tip" parent="lines/Path2D2" instance=ExtResource( 15 )]
 position = Vector2( 1282, 299 )
-rotation = 3.13965
+rotation = -0.00172244
 offset = 763.95
 
 [node name="car_poser5" type="PathFollow2D" parent="lines/Path2D2"]
-position = Vector2( 1203.37, 299.142 )
-rotation = -0.00180144
+position = Vector2( 1201.43, 299.145 )
+rotation = -0.0017928
 offset = 682.23
 
 [node name="hull" parent="lines/Path2D2/car_poser5" instance=ExtResource( 1 )]
@@ -295,8 +295,8 @@ car_ID = 15
 got_engine = false
 
 [node name="car_poser6" type="PathFollow2D" parent="lines/Path2D2"]
-position = Vector2( 1093.34, 299.34 )
-rotation = -0.00180021
+position = Vector2( 1093.51, 299.339 )
+rotation = -0.00179559
 offset = 574.25
 
 [node name="hull" parent="lines/Path2D2/car_poser6" instance=ExtResource( 1 )]
@@ -307,7 +307,6 @@ car_ID = 15
 got_engine = false
 
 [node name="line" parent="lines" instance=ExtResource( 10 )]
-self_modulate = Color( 1, 0.803922, 0.952941, 0.666667 )
 curve = SubResource( 20 )
 
 [node name="terminator" parent="lines/line" instance=ExtResource( 7 )]
@@ -331,7 +330,6 @@ rail_id = 2
 [node name="sw__" parent="lines/to_turn_table" instance=ExtResource( 6 )]
 position = Vector2( 675.93, -16.9779 )
 rotation = -0.310459
-scale = Vector2( 1, 1 )
 offset = 546.09
 this_line_dir = 2
 main_line_dir = 1
@@ -363,6 +361,7 @@ rotation = -0.420293
 
 [node name="Player" parent="." instance=ExtResource( 8 )]
 position = Vector2( 800, 450 )
+z_index = 60
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 current = true
@@ -380,7 +379,6 @@ visible = false
 
 [node name="turn_table" type="Node2D" parent="."]
 rotation = -0.656244
-scale = Vector2( 1, 1 )
 script = ExtResource( 14 )
 
 [node name="bg" type="Polygon2D" parent="turn_table"]

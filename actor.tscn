@@ -55,8 +55,11 @@ tracks/1/keys = {
 
 [node name="Player" type="RigidBody2D"]
 z_index = 10
+collision_layer = 2
+collision_mask = 2
 mode = 2
 mass = 0.07
+custom_integrator = true
 contacts_reported = 1
 contact_monitor = true
 linear_damp = 60.156
@@ -87,6 +90,9 @@ autoplay = "scriptwalk"
 anims/scriptwalk = ExtResource( 2 )
 anims/stand = SubResource( 21 )
 anims/walk = SubResource( 22 )
+
+[node name="pj" type="PinJoint2D" parent="."]
+node_a = NodePath("..")
 
 [connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
 [connection signal="body_entered" from="interact" to="." method="_on_mount_fndr_body_entered"]

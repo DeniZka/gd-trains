@@ -11,6 +11,7 @@
 extents = Vector2( 52, 16 )
 
 [node name="hull" type="RigidBody2D"]
+collision_mask = 3
 input_pickable = true
 mass = 178.8
 script = ExtResource( 2 )

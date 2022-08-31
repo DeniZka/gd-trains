@@ -103,6 +103,7 @@ interact={
 [layer_names]
 
 2d_physics/layer_1="car hull"
+2d_physics/layer_2="player"
 2d_physics/layer_3="hooks"
 2d_physics/layer_4="table tips"
 2d_physics/layer_17="rail0"
