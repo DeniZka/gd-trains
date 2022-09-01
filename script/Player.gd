@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-var force = 200
+var force = 100
 var speed = 11
 var qspeed = speed * speed
 var poly: Polygon2D = null
@@ -25,9 +25,9 @@ func coll_on_off(status):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down"):
-		$Node2D/AnimationPlayer.play("scriptwalk")
+		$interact/AnimationPlayer.play("scriptwalk")
 	else:
-		$Node2D/AnimationPlayer.play("stand")
+		$interact/AnimationPlayer.play("stand")
 	pass
 	
 	if Input.is_action_just_pressed("mount"):
@@ -37,7 +37,7 @@ func _process(delta):
 				vv.mount(self)
 				coll_on_off(false)
 				mounted = vv
-#				get_parent().remove_child(self)
+#				get_parent().remove_child(self)0.02
 #				vv.add_child(self)
 				position = vv.global_position
 				$interact.monitorable = false
@@ -47,13 +47,14 @@ func _process(delta):
 			#position = mounted.get_node("dismount_point").position
 			mounted.umount(self)
 			set_linear_velocity(Vector2(0, 0))
-			set_rotation(0)
+#			set_rotation(0)
 			coll_on_off(true)
 			#var main: Node = get_node("/root/main")
 			#get_parent().remset_linear_velocityove_child(self)
 			#main.add_child(self)
 			mounted = null	
-			$interact.monitorable = true	
+			$interact.monitorable = true
+			$pj.node_b = ""
 	
 
 func _physics_process(delta):
@@ -66,7 +67,21 @@ func _physics_process(delta):
 
 func _integrate_forces(state: Physics2DDirectBodyState):
 	
-	rotation = 0
+	if Input.is_action_just_released("ui_left"):
+		set_linear_velocity(Vector2(0, 0))
+		moving = false
+	if Input.is_action_just_released("ui_right"):
+		set_linear_velocity(Vector2(0, 0))	
+		moving = false
+	if Input.is_action_just_released("ui_up"):
+		set_linear_velocity(Vector2(0, 0))
+		moving = false
+	if Input.is_action_just_released("ui_down"):
+		set_linear_velocity(Vector2(0, 0))
+		moving = false
+			
+	
+	#rotation = 0
 	var v: Vector2 = Vector2(0, 0)
 	#if not mounted:
 	if Input.is_action_pressed("ui_left"):
@@ -84,38 +99,12 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 			
 	#rotate poly only when walking	
 	v = v.normalized() * force
+	v = v.rotated($cam.rotation)
 	#do not turn while just stand
-	if v != Vector2(0, 0):
-		$shadow.rotation = v.angle() + PI/2
-		$Node2D.rotation = v.angle() + PI/2
+	if moving:
+		$interact.rotation = v.angle() + PI/2
+
 		
-	#poly.rotate( v.angle() )
-	
-	if Input.is_action_just_released("ui_left"):
-		set_linear_velocity(Vector2(0, 0))
-		moving = false
-	if Input.is_action_just_released("ui_right"):
-		set_linear_velocity(Vector2(0, 0))	
-		moving = false
-	if Input.is_action_just_released("ui_up"):
-		set_linear_velocity(Vector2(0, 0))
-		moving = false
-	if Input.is_action_just_released("ui_down"):
-		set_linear_velocity(Vector2(0, 0))
-		moving = false
-			
-
-	
-
-			
-	#if mounted:
-	#	set_linear_velocity(Vector2(0, 0)) #no self move
-	#	set_global_transform(mounted.get_global_transform()) #set global position of mount
-		#set_position(mounted.get_position())
-			
-	
-	#set_applied_force(v)
-#	apply_central_impulse(v)
 	if mounted:
 #		var l:RigidBody2D = $"/root/main/lines/c_centr/car_poser2/loco"
 		set_linear_velocity(v + mounted.linear_velocity)
@@ -123,12 +112,10 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 			$pj.node_b = ""
 		else:
 			$pj.node_b = mounted.get_path()
-#		rotation_degrees = l.rotation_degrees
-#		set_angular_velocity(l.angular_velocity)
 	else:
 		set_linear_velocity(v)
-	var lvel: Vector2 = get_linear_velocity() 
-	print(lvel.length())
+	var lvel: Vector2 = get_linear_velocity()
+#	print(lvel.length())
 	if ( lvel.length_squared() > (qspeed) ):
 		lvel = lvel.normalized() * speed
 #		set_linear_velocity(lvel)	
@@ -138,7 +125,7 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 #	pass
 
 func _on_mount_fndr_body_entered(body):
-	if body.get_meta("type") == "loco":
+	if body.get_meta("type") == "loco" and body.mountable:
 		vehicle_near.append(body)
 		print("can sit")
 
@@ -152,3 +139,9 @@ func _on_mount_fndr_body_exited(body):
 func _on_Player_body_entered(body):
 	print(body.name)
 	pass # Replace with function body.
+
+
+func _on_stand_area_area_entered(area):
+	#check moving platforms
+	print(area.name, " - ", area.z_index)
+#	pass # Replace with function body.
