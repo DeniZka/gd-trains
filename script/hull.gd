@@ -97,3 +97,7 @@ func _on_hull_mouse_entered():
 func _on_hull_mouse_exited():
 	picked = false
 	#pass # Replace with function body.
+
+
+func _on_move_platform_area_entered(area):
+	pass # Replace with function body.

@@ -11,6 +11,7 @@ var m_entered = false
 var can_interact = false
 var zoom = 1.0
 
+var body_on_switch = []
 var body_entered_in = []
 var body_entered_out = []
 
@@ -120,60 +121,70 @@ func prepare_line(body):
 		
 		line_masks[LINE_MAIN] = 1 << (line_ids[LINE_MAIN] + 16)
 		line_masks[LINE_SPLIT] = 1 << (line_ids[LINE_SPLIT] + 16)
-		#print( "MAIN LINE MASK 0x%04x" % (line_masks[LINE_MAIN] >> 16) )
-		#print( "SPLIT/THIS LINE MASK 0x%04x" % (line_masks[LINE_SPLIT] >> 16) )
 		
 	return
 
 func _on_in_body_entered(body):
+	#on ready (connect to another line) one time
 	if (body.name == "rb") or (body.name == "sb"):
 		prepare_line(body)
 		return
 		
-#	print("ON ENTER ", body)
 	#wheel go resolving
 	if body.get_meta("part") != "wheel":
 		return
 		
 	#cheking for single way fork
-	if body in body_entered_out:
-		body_entered_out.erase(body)
-	else:
-		body_entered_in.append(body)
+#	if not body in body_entered_out:
+	body_entered_in.append(body)
 	
 	#set main mask
 	var mask = body.get_collision_mask()
-	mask = mask & 0xffff
+#	mask = mask & 0xffff
 	mask = mask | line_masks[LINE_MAIN]
 	#print("set in mask 0x%04x" % (mask >> 16))
 	body.set_collision_mask(mask)
 	
-
-
+func _on_in_body_exited(body):
+	body_entered_in.erase(body)
+	#remove self mask if body not leave switch at all
+	#remove self mask if it not the same as out mask
+	if body in body_entered_out and line_masks[LINE_MAIN] != line_masks[sel_line]:
+		var mask = body.get_collision_mask()
+		mask = mask & ~line_masks[LINE_MAIN]
+		body.set_collision_mask(mask)
+	#else leave self mask
+	
 func _on_out_body_entered(body):
-	#print("OUT ENTER ", body)
 	if body.get_meta("part") != "wheel":
 		return
-		
+	body_entered_out.append(body)
+	
 	#checking for single way fork
 	var true_from_in = false	
 	if body in body_entered_in:
 		true_from_in = true
-		#print("FROM IN")
-		body_entered_in.erase(body)
-	else:
-		body_entered_out.append(body)
+
+
 	
 	var mask = body.get_collision_mask()
 	var from_active = mask & line_masks[sel_line] == line_masks[sel_line]
-	if not true_from_in and not from_active:
+	if not body in body_entered_in and not from_active:
 		switch_line()
 		
-	mask = mask & 0xffff
+#	mask = mask & 0xffff
 	mask = mask | line_masks[sel_line]
 	#print("set out mask 0x%04x" % (mask >> 16))
 	body.set_collision_mask(mask)
 
+func _on_out_body_exited(body):
+	body_entered_out.erase(body)
+	#need to remove self mask 
+	if body in body_entered_in and line_masks[LINE_MAIN] != line_masks[sel_line]:
+		var mask = body.get_collision_mask()
+		mask = mask & ~line_masks[sel_line]
+		body.set_collision_mask(mask)
+	#else leave self mask
 
 func _on_sensor_area_entered(area):
 	if area.name == "interact":
@@ -187,3 +198,4 @@ func _on_sensor_area_exited(area):
 		can_interact = false
 		zoom = 1.0
 		set_zoom()
+

@@ -1,11 +1,6 @@
-extends Node2D
+extends RigidBody2D#Node2D
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-var rot_speed = 0.03
+var rot_speed = 0.3
 var rot_dir = 0
 
 # Called when the node enters the scene tree for the first time.
@@ -23,9 +18,16 @@ func _process(delta):
 		
 	if rot_dir:
 		rotate(rot_dir * rot_speed * delta)
+	pass
+		
+func _physics_process(delta):
+	pass
+		
+func _integrate_forces(state: Physics2DDirectBodyState):
+	pass
 	
-#	pass
-
-
 func _on_table_tip_on_tip_met():
 	rot_dir = 0
+
+func _on_actor_detect_area_entered(area):
+	print("player is there")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://kraken.tscn" type="PackedScene" id=1]
 [ext_resource path="res://script/old_line.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://sw.tscn" type="PackedScene" id=6]
 [ext_resource path="res://terminator.tscn" type="PackedScene" id=7]
 [ext_resource path="res://actor.tscn" type="PackedScene" id=8]
+[ext_resource path="res://open_van.tscn" type="PackedScene" id=9]
 [ext_resource path="res://line.tscn" type="PackedScene" id=10]
 [ext_resource path="res://assets/house/GTATIL1_90.bmp" type="Texture" id=12]
 [ext_resource path="res://assets/house/GTATIL1_91.bmp" type="Texture" id=13]
@@ -37,7 +38,7 @@ _data = {
 
 [sub_resource type="Curve2D" id=18]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, -516, 445, 0, 0, 0, 0, -109.258, 356.09, 0, 0, 0, 0, 530, 358 )
+"points": PoolVector2Array( 0, 0, 0, 0, -516, 445, 0, 0, 0, 0, -109.258, 356.09, 0, 0, 0, 0, 315, 359, 0, 0, 0, 0, 530, 358 )
 }
 
 [sub_resource type="Curve2D" id=19]
@@ -64,15 +65,18 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 123, -49, -35.9188, 15.7145, 35.9188, -15.7145, 372, -160, -63.9803, 0.561231, 63.9803, -0.561231, 623, -199, -127, -12, 127, 12, 1278, -157, -273.341, 19.0703, 273.341, -19.0703, 2201, -60, 0, 0, 0, 0, 2884, -234 )
 }
 
+[sub_resource type="CubeMesh" id=23]
+custom_aabb = AABB( 0.068, 0, 0, 0, 0, 0 )
+size = Vector3( 1, 1, 1 )
+
 [sub_resource type="Curve2D" id=24]
 bake_interval = 125.21
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, -130, -1, 0, 0, 0, 0, 129, -1 )
 }
 
-[sub_resource type="CubeMesh" id=23]
-custom_aabb = AABB( 0.068, 0, 0, 0, 0, 0 )
-size = Vector3( 1, 1, 1 )
+[sub_resource type="CircleShape2D" id=28]
+radius = 131.856
 
 [node name="main" type="Node"]
 
@@ -149,7 +153,15 @@ position = Vector2( 242.004, 325 )
 rotation = -3.04664
 offset = 2881.95
 this_line_dir = 2
+default_active_line = 1
 flip = true
+
+[node name="PathFollow2D" type="PathFollow2D" parent="lines/c_line"]
+position = Vector2( 930.807, 507.598 )
+rotation = 3.07172
+offset = 2155.25
+
+[node name="hull" parent="lines/c_line/PathFollow2D" instance=ExtResource( 9 )]
 
 [node name="c_centr" type="Path2D" parent="lines"]
 self_modulate = Color( 1, 0.933333, 0.2, 0.666667 )
@@ -189,7 +201,6 @@ rotation = 0.00164845
 offset = 60.4
 
 [node name="hull" parent="lines/c_centr/car_poser4" instance=ExtResource( 1 )]
-rotation = 3.14159
 mass = 14.67
 car_ID = 14
 got_engine = false
@@ -250,12 +261,13 @@ script = ExtResource( 2 )
 rail_id = 3
 
 [node name="PathFollow2D" type="PathFollow2D" parent="lines/test"]
-position = Vector2( -142.617, 363.382 )
-rotation = -0.215213
-offset = 382.03
+position = Vector2( 238.02, 358.472 )
+rotation = 0.00685664
+offset = 763.7
 
 [node name="hull" parent="lines/test/PathFollow2D" instance=ExtResource( 1 )]
 rotation = 3.14159
+mass = 117.87
 car_ID = 5
 
 [node name="terminator" parent="lines/test" instance=ExtResource( 7 )]
@@ -378,28 +390,6 @@ texture = ExtResource( 5 )
 texture_scale = 0.5
 color = Color( 0.713726, 0.537255, 0.227451, 1 )
 
-[node name="turn_table" type="Node2D" parent="."]
-rotation = -0.656244
-script = ExtResource( 14 )
-
-[node name="bg" type="Polygon2D" parent="turn_table"]
-self_modulate = Color( 0.552941, 0.552941, 0.552941, 1 )
-texture = ExtResource( 4 )
-texture_scale = Vector2( 1.3, 1.3 )
-polygon = PoolVector2Array( -130, 2, -125, -31, -113, -64, -93, -91, -65, -112, -34, -125, 0, -130, 33, -126, 65, -113, 92, -91, 112, -65, 126, -33, 130, 0, 126, 34, 114, 65, 92, 93, 66, 113, 35, 126, 0, 131, -34, 126, -65, 114, -92, 93, -112, 67, -126, 34 )
-uv = PoolVector2Array( -130, 2, -125, -31, -113, -64, -93, -91, -65, -112, -34, -125, 0, -130, 33, -126, 65, -113, 92, -91, 112, -65, 126, -33, 130, 0, 126, 34, 114, 65, 92, 93, 66, 113, 35, 126, 0, 131, -34, 126, -65, 114, -92, 93, -112, 67, -126, 34 )
-
-[node name="l" parent="turn_table" instance=ExtResource( 10 )]
-self_modulate = Color( 1, 0.933333, 0.2, 0.666667 )
-curve = SubResource( 24 )
-rail_id = 2
-
-[node name="table_tip" parent="turn_table/l" instance=ExtResource( 15 )]
-position = Vector2( 128.954, -1 )
-offset = 258.94
-cubic_interp = false
-loop = false
-
 [node name="Node2D" type="Node2D" parent="."]
 visible = false
 
@@ -422,4 +412,40 @@ texture = ExtResource( 13 )
 polygon = PoolVector2Array( 54, 4, 25, 45, 26, 62, 50, 32 )
 uv = PoolVector2Array( 0.0434113, 0.00761032, 63.4179, 0.419128, 63.8294, 62.5591, 0.454941, 63.5878 )
 
-[connection signal="on_tip_met" from="turn_table/l/table_tip" to="turn_table" method="_on_table_tip_on_tip_met"]
+[node name="turn_table2" type="RigidBody2D" parent="."]
+collision_layer = 16
+collision_mask = 16
+mode = 1
+mass = 65535.0
+script = ExtResource( 14 )
+
+[node name="bg" type="Polygon2D" parent="turn_table2"]
+self_modulate = Color( 0.552941, 0.552941, 0.552941, 1 )
+rotation = -0.656244
+texture = ExtResource( 4 )
+texture_scale = Vector2( 1.3, 1.3 )
+polygon = PoolVector2Array( -130, 2, -125, -31, -113, -64, -93, -91, -65, -112, -34, -125, 0, -130, 33, -126, 65, -113, 92, -91, 112, -65, 126, -33, 130, 0, 126, 34, 114, 65, 92, 93, 66, 113, 35, 126, 0, 131, -34, 126, -65, 114, -92, 93, -112, 67, -126, 34 )
+uv = PoolVector2Array( -130, 2, -125, -31, -113, -64, -93, -91, -65, -112, -34, -125, 0, -130, 33, -126, 65, -113, 92, -91, 112, -65, 126, -33, 130, 0, 126, 34, 114, 65, 92, 93, 66, 113, 35, 126, 0, 131, -34, 126, -65, 114, -92, 93, -112, 67, -126, 34 )
+
+[node name="l" parent="turn_table2" instance=ExtResource( 10 )]
+self_modulate = Color( 1, 0.933333, 0.2, 0.666667 )
+position = Vector2( 0.610145, 0.79229 )
+rotation = -0.656244
+curve = SubResource( 24 )
+rail_id = 2
+
+[node name="table_tip" parent="turn_table2/l" instance=ExtResource( 15 )]
+position = Vector2( 128.954, -1 )
+offset = 258.94
+cubic_interp = false
+loop = false
+
+[node name="actor_detect" type="Area2D" parent="turn_table2"]
+collision_layer = 32
+collision_mask = 2
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="turn_table2/actor_detect"]
+shape = SubResource( 28 )
+
+[connection signal="on_tip_met" from="turn_table2/l/table_tip" to="turn_table2" method="_on_table_tip_on_tip_met"]

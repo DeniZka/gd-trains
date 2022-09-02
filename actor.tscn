@@ -103,12 +103,15 @@ __meta__ = {
 "_editor_description_": "this joint is used for hook moving platform while stand"
 }
 
-[node name="stand_area" type="Area2D" parent="."]
+[node name="ground_detector" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 32
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="stand_area"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ground_detector"]
 shape = SubResource( 23 )
 
 [connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
 [connection signal="body_entered" from="interact" to="." method="_on_mount_fndr_body_entered"]
 [connection signal="body_exited" from="interact" to="." method="_on_mount_fndr_body_exited"]
-[connection signal="area_entered" from="stand_area" to="." method="_on_stand_area_area_entered"]
+[connection signal="area_entered" from="ground_detector" to="." method="_on_ground_detector_area_entered"]
+[connection signal="area_exited" from="ground_detector" to="." method="_on_ground_detector_area_exited"]
