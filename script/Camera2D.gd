@@ -6,11 +6,13 @@ const ST_DEFAULT = 0
 const ST_TRANSIT_TO_MOUNT = 1 
 const ST_MOUNT = 2
 const ST_TRANSIT_TO_DEFAULT = 3
+enum ms {MS_DRIVER, MS_PASSANGEER}
 
 var cam_state = ST_DEFAULT
 var lerp_w = 0
-const TR_SPEED = 5
+const TR_SPEED = 2
 var last_mount_angle = 0
+var add_angle = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -42,23 +44,31 @@ func _unhandled_input(event):
 func _process(delta):
 	match cam_state:
 		ST_DEFAULT:
-			if actor.mounted:
+			if actor.mounted and actor.mount_status == ms.MS_PASSANGEER:
 				cam_state = ST_TRANSIT_TO_MOUNT
 				lerp_w = 0
+				#select nearest vehicle rotation angle
+				var ang_orig = actor.mounted.global_rotation
+				print("angs: ", ang_orig)
+				if  abs(ang_orig) <= PI/2:
+					add_angle = 0
+				else:
+					add_angle = PI
+					
 			else:
 				rotation = 0
 		ST_TRANSIT_TO_MOUNT:
 			lerp_w += TR_SPEED * delta
 			if lerp_w > 1:
 				lerp_w = 1
-			rotation = lerp_angle(0, actor.mounted.rotation + PI/2, lerp_w)
+			rotation = lerp_angle(0, (actor.mounted.global_rotation + add_angle), lerp_w)				
 			if lerp_w == 1:
 				cam_state = ST_MOUNT
 		ST_MOUNT:
 			if not actor.mounted:
 				cam_state = ST_TRANSIT_TO_DEFAULT
 			else:
-				last_mount_angle = actor.mounted.rotation + PI/2
+				last_mount_angle = actor.mounted.global_rotation + add_angle
 				rotation = last_mount_angle
 		ST_TRANSIT_TO_DEFAULT:
 			lerp_w -= TR_SPEED * delta

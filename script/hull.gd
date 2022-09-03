@@ -4,9 +4,11 @@ extends RigidBody2D
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+enum ms {MS_DRIVER, MS_PASSANGEER}
 export var mountable: bool = true
 export var car_ID: int = 0
 export var got_engine: bool = true
+export var impassable: bool = true
 var f = 40000
 var picked = false
 var wheels = []
@@ -16,16 +18,19 @@ var mounted = null
 func mount(actor):
 	if mountable:
 		mounted = actor
-		return true
+		if got_engine:
+			return ms.MS_DRIVER
+		else:
+			return ms.MS_PASSANGEER
 	else:
-		return false
+		return null
 
 func umount(actor):
 	mounted = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if car_ID > 10:
+	if not got_engine:
 		get_node("loco").visible = false
 	else:
 		get_node("car").visible = false

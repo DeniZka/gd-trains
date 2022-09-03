@@ -5,6 +5,8 @@ var speed = 11
 var qspeed = speed * speed
 var poly: Polygon2D = null
 var mounted = null
+enum ms {MS_DRIVER, MS_PASSANGEER}
+var mount_status = ms.MS_DRIVER
 var look_at = Vector2(1, 0)
 var can_sit = false
 var vehicle_near = []
@@ -23,7 +25,7 @@ func coll_on_off(status):
 	set_collision_layer_bit(1, status)
 	
 func do_mount(vehicle):
-	vehicle.mount(self)
+	mount_status = vehicle.mount(self)
 	coll_on_off(false)
 	mounted = vehicle
 #				get_parent().remove_child(self)0.02
@@ -77,16 +79,16 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 	
 	
 	if Input.is_action_just_released("ui_left"):
-		set_linear_velocity(Vector2(0, 0))
+		state.set_linear_velocity(Vector2(0, 0))
 		moving = false
 	if Input.is_action_just_released("ui_right"):
-		set_linear_velocity(Vector2(0, 0))	
+		state.set_linear_velocity(Vector2(0, 0))	
 		moving = false
 	if Input.is_action_just_released("ui_up"):
-		set_linear_velocity(Vector2(0, 0))
+		state.set_linear_velocity(Vector2(0, 0))
 		moving = false
 	if Input.is_action_just_released("ui_down"):
-		set_linear_velocity(Vector2(0, 0))
+		state.set_linear_velocity(Vector2(0, 0))
 		moving = false
 			
 	
@@ -121,7 +123,7 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 		pass
 #		var l:RigidBody2D = $"/root/main/lines/c_centr/car_poser2/loco"
 		#set_linear_velocity(v + mounted.linear_velocity)
-		set_linear_velocity(mounted.linear_velocity)
+		state.set_linear_velocity(mounted.linear_velocity)
 		#if moving:
 		#	$pj.node_b = ""
 		#else:
@@ -130,15 +132,15 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 		if moving:
 			$pj.node_b = ""
 			if moving_area_body is StaticBody2D:
-				set_linear_velocity(v)
+				state.set_linear_velocity(v)
 			else:
-				set_linear_velocity(v + moving_area_body.linear_velocity)
+				state.set_linear_velocity(v + moving_area_body.linear_velocity)
 		else:
 			$pj.node_b = moving_area_body.get_path()
 		
 	else:
 		
-		set_linear_velocity(v)
+		state.set_linear_velocity(v)
 	var lvel: Vector2 = get_linear_velocity()
 #	print(lvel.length())
 	if ( lvel.length_squared() > (qspeed) ):
@@ -150,13 +152,13 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 #	pass
 
 func _on_mount_fndr_body_entered(body):
-	if body.get_meta("type") == "loco" and body.mountable:
+	if body.has_meta("type") and body.get_meta("type") == "loco" and body.mountable:
 		vehicle_near.append(body)
 		print("can sit")
 
 
 func _on_mount_fndr_body_exited(body):
-	if body.get_meta("type") == "loco":
+	if body.has_meta("type") and body.get_meta("type") == "loco":
 		vehicle_near.erase(body)
 		can_sit = false
 
