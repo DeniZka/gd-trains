@@ -447,5 +447,6 @@ position = Vector2( 753, 440 )
 
 [node name="Camera2D" type="Camera2D" parent="horse"]
 current = true
+script = ExtResource( 3 )
 
 [connection signal="on_tip_met" from="turn_table2/l/table_tip" to="turn_table2" method="_on_table_tip_on_tip_met"]

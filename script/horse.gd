@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-
+var mounted = false
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -17,8 +17,8 @@ const ROT_BACK = 0.3
 const ROT_STAY = 1
 const ROT_WALK = 0.7
 const ROT_TROT = 0.6
-const ROT_CANTER = 0.3
-const ROT_GALLOP = 0.2
+const ROT_CANTER = 0.5
+const ROT_GALLOP = 0.3
 var speed = 0
 var sv = Vector2(0, 0)
 var rot_speed = 1
@@ -86,23 +86,30 @@ func _physics_process(delta):
 func _integrate_forces(state: Physics2DDirectBodyState):
 	match move_state:
 		BACK: 
-			state.linear_velocity = Vector2(1,0).rotated(global_rotation + PI/2) * 10
-			pass
+			sv = Vector2(1,0).rotated(global_rotation + PI/2) * 10
+#			state.apply_central_impulse(sv)
+			state.linear_velocity = sv
 		STAY:
+			sv = Vector2(0, 0)
+#			state.apply_central_impulse(sv)
 			state.linear_velocity = Vector2(0, 0)
-			pass
 		WALK:
-			state.linear_velocity = Vector2(1, 0).rotated(global_rotation - PI/2) * 10
-			pass
+			sv = Vector2(1, 0).rotated(global_rotation - PI/2) * 10
+#			state.apply_central_impulse(sv)
+			state.linear_velocity = sv
 		TROT:
-			state.linear_velocity = Vector2(1, 0).rotated(global_rotation - PI/2) * 20
-			pass
+			sv = Vector2(1, 0).rotated(global_rotation - PI/2) * 20
+#			state.apply_central_impulse(sv)
+			state.linear_velocity = sv
 		CANTER:
-			state.linear_velocity = Vector2(1, 0).rotated(global_rotation - PI/2) * 40
-			pass
+			sv = Vector2(1, 0).rotated(global_rotation - PI/2) * 40
+#			state.apply_central_impulse(sv)
+			state.linear_velocity = sv
 		GALLOP:
-			state.linear_velocity = Vector2(1, 0).rotated(global_rotation - PI/2) * 80
-			pass
+			sv = Vector2(1, 0).rotated(global_rotation - PI/2) * 80
+#			state.apply_central_impulse(sv)
+			state.linear_velocity = sv
+			
 	match turn_state:
 		LEFT:
 			state.angular_velocity = -rot_speed
@@ -114,3 +121,11 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 			state.angular_velocity = rot_speed
 			pass
 	pass
+
+
+func _on_horse_body_entered(body):
+	move_state = STAY
+	rot_speed = ROT_STAY
+	pass # Replace with function body.
+
+

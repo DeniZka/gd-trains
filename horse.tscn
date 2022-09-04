@@ -9,9 +9,11 @@ radius = 5.0
 height = 24.0
 
 [node name="horse" type="RigidBody2D"]
-mode = 2
-mass = 23.08
+z_index = 5
+mass = 0.88
 custom_integrator = true
+contacts_reported = 1
+contact_monitor = true
 script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -36,3 +38,5 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 200, 448 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_horse_body_entered"]
