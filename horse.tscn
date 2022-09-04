@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/horse.png" type="Texture" id=1]
+[ext_resource path="res://assets/horse1.png" type="Texture" id=2]
+[ext_resource path="res://script/horse.gd" type="Script" id=3]
+
+[sub_resource type="CapsuleShape2D" id=29]
+radius = 5.0
+height = 24.0
+
+[node name="horse" type="RigidBody2D"]
+mode = 2
+mass = 23.08
+custom_integrator = true
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 0, -3 )
+shape = SubResource( 29 )
+
+[node name="old" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+hframes = 6
+vframes = 4
+region_enabled = true
+region_rect = Rect2( 0, 0, 768, 512 )
+
+[node name="new" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+hframes = 10
+vframes = 7
+frame = 28
+region_enabled = true
+region_rect = Rect2( 0, 0, 200, 448 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

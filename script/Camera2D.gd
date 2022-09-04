@@ -59,11 +59,11 @@ func _process(delta):
 				rotation = 0
 		ST_TRANSIT_TO_MOUNT:
 			lerp_w += TR_SPEED * delta
-			if lerp_w > 1:
+			if lerp_w >= 1:
 				lerp_w = 1
-			rotation = lerp_angle(0, (actor.mounted.global_rotation + add_angle), lerp_w)				
-			if lerp_w == 1:
 				cam_state = ST_MOUNT
+			rotation = lerp_angle(0, (actor.mounted.global_rotation + add_angle), lerp_w)				
+				
 		ST_MOUNT:
 			if not actor.mounted:
 				cam_state = ST_TRANSIT_TO_DEFAULT
