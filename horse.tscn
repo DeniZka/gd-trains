@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/horse.png" type="Texture" id=1]
 [ext_resource path="res://assets/horse1.png" type="Texture" id=2]
@@ -6,7 +6,38 @@
 
 [sub_resource type="CapsuleShape2D" id=29]
 radius = 5.0
-height = 24.0
+height = 18.0
+
+[sub_resource type="Animation" id=30]
+resource_name = "left"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("new:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 38 ]
+}
+
+[sub_resource type="Animation" id=31]
+resource_name = "stand"
+tracks/0/type = "value"
+tracks/0/path = NodePath("new:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 38 ]
+}
 
 [node name="horse" type="RigidBody2D"]
 z_index = 5
@@ -17,7 +48,6 @@ contact_monitor = true
 script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 0, -3 )
 shape = SubResource( 29 )
 
@@ -30,13 +60,17 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 768, 512 )
 
 [node name="new" type="Sprite" parent="."]
+position = Vector2( 0, 3 )
 texture = ExtResource( 2 )
 hframes = 10
 vframes = 7
-frame = 28
+frame = 38
 region_enabled = true
 region_rect = Rect2( 0, 0, 200, 448 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "stand"
+anims/left = SubResource( 30 )
+anims/stand = SubResource( 31 )
 
 [connection signal="body_entered" from="." to="." method="_on_horse_body_entered"]
