@@ -41,6 +41,7 @@ tracks/0/keys = {
 
 [node name="horse" type="RigidBody2D"]
 z_index = 5
+collision_mask = 3
 mass = 0.88
 custom_integrator = true
 contacts_reported = 1

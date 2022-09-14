@@ -373,8 +373,10 @@ position = Vector2( 800, 450 )
 z_index = 60
 
 [node name="cam" type="Camera2D" parent="Actor"]
+position = Vector2( -1, 0 )
 z_index = 500
 rotating = true
+current = true
 zoom = Vector2( 0.6, 0.6 )
 script = ExtResource( 3 )
 
@@ -446,7 +448,6 @@ shape = SubResource( 28 )
 position = Vector2( 753, 440 )
 
 [node name="Camera2D" type="Camera2D" parent="horse"]
-current = true
 script = ExtResource( 3 )
 
 [connection signal="on_tip_met" from="turn_table2/l/table_tip" to="turn_table2" method="_on_table_tip_on_tip_met"]

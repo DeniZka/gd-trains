@@ -27,6 +27,52 @@ func mount(actor):
 
 func umount(actor):
 	mounted = null
+	
+func get_nearest_mount_point(actor_global_pos):
+	var d_node = get_node("doors")
+	if not d_node:
+		return null
+	var doors = d_node.get_children()
+	var qdis = INF
+	var tdis = 0
+	var sel_door = null
+	#select nearest outside door
+	for d in doors:
+		tdis = to_global(d.get_node("out").position).distance_squared_to(actor_global_pos)
+#			tdis = to_global(ch.position).distance_squared_to(actor_global_pos)
+		if tdis < qdis:
+			qdis = tdis
+			sel_door = d
+
+	#return target inside door
+	if sel_door:
+		return to_global(sel_door.get_node("in").position)
+	else:
+		return null
+#	return $doors/in1.global_position
+	
+func get_nearest_dismount_point(actor_global_pos):
+	var d_node = get_node("doors")
+	if not d_node:
+		return null
+	var doors = d_node.get_children()
+	var qdis = INF
+	var tdis = 0
+	var sel_door = null
+	#select nearest outside door
+	for d in doors:
+		tdis = to_global(d.get_node("in").position).distance_squared_to(actor_global_pos)
+#			tdis = to_global(ch.position).distance_squared_to(actor_global_pos)
+		if tdis < qdis:
+			qdis = tdis
+			sel_door = d
+
+	#return target inside door
+	if sel_door:
+		return to_global(sel_door.get_node("out").position)
+	else:
+		return null
+	pass
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -94,15 +140,24 @@ func _physics_process(delta):
 
 
 func _on_hull_mouse_entered():
-	picked = true
+
 	#print("mouse is in")
-	#pass # Replace with function body.
+	pass # Replace with function body.
 
 
 func _on_hull_mouse_exited():
-	picked = false
-	#pass # Replace with function body.
+	pass # Replace with function body.
 
 
 func _on_move_platform_area_entered(area):
+	pass # Replace with function body.
+
+
+func _on_mouse_sensor_mouse_entered():
+	picked = true
+	pass # Replace with function body.
+
+
+func _on_mouse_sensor_mouse_exited():
+	picked = false
 	pass # Replace with function body.

@@ -74,7 +74,7 @@ shape = SubResource( 16 )
 [node name="interact" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="interact"]
-position = Vector2( 0, -13 )
+position = Vector2( 0, -14 )
 shape = SubResource( 17 )
 
 [node name="Sprite" type="Sprite" parent="interact"]
@@ -97,18 +97,18 @@ polygon = PoolVector2Array( 8, 0, 7, -3, 5, -5, 3, -6, -3, -6, -6, -4, -8, 0, -7
 [node name="rot" type="Node2D" parent="."]
 scale = Vector2( 0.3, 0.3 )
 
-[node name="pj" type="PinJoint2D" parent="."]
-node_a = NodePath("..")
-__meta__ = {
-"_editor_description_": "this joint is used for hook moving platform while stand"
-}
-
 [node name="ground_detector" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ground_detector"]
 shape = SubResource( 23 )
+
+[node name="pj" type="PinJoint2D" parent="ground_detector"]
+node_a = NodePath("../..")
+__meta__ = {
+"_editor_description_": "this joint is used for hook moving platform while stand"
+}
 
 [connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
 [connection signal="body_entered" from="interact" to="." method="_on_mount_fndr_body_entered"]

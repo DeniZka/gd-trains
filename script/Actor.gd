@@ -12,6 +12,10 @@ var can_sit = false
 var vehicle_near = []
 var moving = false #when pressed buttons
 var moving_area_body = null
+enum {ST_IDLE, ST_WALK, ST_JUMP, ST_DRIVE}
+var a_state = ST_IDLE
+
+onready var pj: PinJoint2D = $ground_detector/pj
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,9 +24,11 @@ func _ready():
 
 func coll_on_off(status):
 	#set_collision_mask_bit(0, status)
-	set_collision_layer_bit(1, status)
 	#set_collision_layer_bit(0, status)
-	set_collision_layer_bit(1, status)
+	
+	#set_collision_layer_bit(1, status)
+	#set_collision_layer_bit(1, status)
+	pass
 	
 func do_mount(vehicle):
 	mount_status = vehicle.mount(self)
@@ -30,7 +36,8 @@ func do_mount(vehicle):
 	mounted = vehicle
 #				get_parent().remove_child(self)0.02
 #				vv.add_child(self)
-	position = vehicle.global_position #DO THIS IN MAIN PROCESS CAUSE OF PHYSICSC DOESNOT ACCEPT IT
+	#position = vehicle.global_position #DO THIS IN MAIN PROCESS CAUSE OF PHYSICSC DOESNOT ACCEPT IT
+	position = vehicle.get_nearest_mount_point(self.global_position)
 	$interact.monitorable = false
 	$ground_detector.monitoring = false
 	#vv.print_mask()	
@@ -44,27 +51,51 @@ func do_umount():
 	#var main: Node = get_node("/root/main")
 	#get_parent().remset_linear_velocityove_child(self)
 	#main.add_child(self)
+	global_position = mounted.get_nearest_dismount_point(self.global_position)
 	mounted = null	
 	$interact.monitorable = true
 	$ground_detector.monitoring = true #FIXME: bug when stand back on ground
-	$pj.node_b = ""
 	
+	pj.node_b = ""
 	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down"):
-		$interact/AnimationPlayer.play("scriptwalk")
-	else:
-		$interact/AnimationPlayer.play("stand")
-	
-	if Input.is_action_just_pressed("mount"):
-		if not mounted and vehicle_near.size() > 0:
+func try_mount_set_state():
+	if not mounted:
+		if vehicle_near.size() > 0:
 			var vv = vehicle_near[0] # or will be null :( bug???
 			if vv.mountable:
 				do_mount(vv)
-		elif mounted:
-			do_umount()
-	
+				if vv.got_engine:
+					a_state = ST_DRIVE
+					$interact/Sprite.visible = false
+					$interact/shadow.visible = false
+				else:
+					a_state = ST_IDLE
+	else:
+		do_umount()
+			
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	match a_state:
+		ST_IDLE:
+			$interact/AnimationPlayer.play("stand")
+			if Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down"):
+				a_state = ST_WALK
+			if Input.is_action_just_pressed("mount"):
+				try_mount_set_state()
+		ST_DRIVE:
+			$interact/AnimationPlayer.play("stand")
+			if Input.is_action_just_pressed("mount"):
+				$interact/Sprite.visible = true
+				$interact/shadow.visible = true
+				do_umount()
+				a_state = ST_IDLE
+		ST_WALK:
+			if not (Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down")):
+				a_state = ST_IDLE
+			$interact/AnimationPlayer.play("scriptwalk")
+			if Input.is_action_just_pressed("mount"):
+				try_mount_set_state()
+			
 
 func _physics_process(delta):
 	pass
@@ -75,78 +106,50 @@ func _physics_process(delta):
 
 
 func _integrate_forces(state: Physics2DDirectBodyState):
-	
-	
-	
-	if Input.is_action_just_released("ui_left"):
-		state.set_linear_velocity(Vector2(0, 0))
-		moving = false
-	if Input.is_action_just_released("ui_right"):
-		state.set_linear_velocity(Vector2(0, 0))	
-		moving = false
-	if Input.is_action_just_released("ui_up"):
-		state.set_linear_velocity(Vector2(0, 0))
-		moving = false
-	if Input.is_action_just_released("ui_down"):
-		state.set_linear_velocity(Vector2(0, 0))
-		moving = false
-			
-	
 	#rotation = 0
-	var v: Vector2 = Vector2(0, 0)
-	#if not mounted:
-	if Input.is_action_pressed("ui_left"):
-		moving = true
-		v.x += -1
-	if Input.is_action_pressed("ui_right"):
-		v.x += 1
-		moving = true
-	if Input.is_action_pressed("ui_up"):
-		v.y += -1
-		moving = true
-	if Input.is_action_pressed("ui_down"):
-		v.y += 1
-		moving = true
-			
-	#rotate poly only when walking	
-	if Input.is_key_pressed(KEY_SHIFT):
-		v = v.normalized() * force * 2
-	else:
-		v = v.normalized() * force
-	v = v.rotated($cam.rotation)
-	#do not turn while just stand
-	if moving:
-		$interact.rotation = v.angle() + PI/2
-
+	var v: Vector2 = Vector2.ZERO
 		
-	if mounted:
-		pass
-#		var l:RigidBody2D = $"/root/main/lines/c_centr/car_poser2/loco"
-		#set_linear_velocity(v + mounted.linear_velocity)
-		state.set_linear_velocity(mounted.linear_velocity)
-		#if moving:
-		#	$pj.node_b = ""
-		#else:
-		#	$pj.node_b = mounted.get_path()
-	elif moving_area_body:
-		if moving:
-			$pj.node_b = ""
-			if moving_area_body is StaticBody2D:
-				state.set_linear_velocity(v)
+	match a_state:
+		ST_IDLE:
+			if mounted: #as passenger
+				#state.set_linear_velocity(mounted.linear_velocity)
+				pj.node_b = mounted.get_path()
+			elif moving_area_body:
+				pj.node_b = moving_area_body.get_path() #hook				
 			else:
-				state.set_linear_velocity(v + moving_area_body.linear_velocity)
-		else:
-			$pj.node_b = moving_area_body.get_path()
-		
-	else:
-		
-		state.set_linear_velocity(v)
-	var lvel: Vector2 = get_linear_velocity()
-#	print(lvel.length())
-	if ( lvel.length_squared() > (qspeed) ):
-		lvel = lvel.normalized() * speed
-#		set_linear_velocity(lvel)	
-	
+				state.set_linear_velocity(Vector2.ZERO)
+		ST_DRIVE:
+			#state.set_linear_velocity(mounted.linear_velocity)
+			pj.node_b = mounted.get_path()
+		ST_WALK:
+			#if not mounted:
+			if Input.is_action_pressed("ui_left"):
+				v.x += -1
+			if Input.is_action_pressed("ui_right"):
+				v.x += 1
+			if Input.is_action_pressed("ui_up"):
+				v.y += -1
+			if Input.is_action_pressed("ui_down"):
+				v.y += 1
+			if Input.is_key_pressed(KEY_SHIFT):
+				v = v.normalized() * force * 2
+			else:
+				v = v.normalized() * force
+			v = v.rotated($cam.rotation)
+			#do not turn while just stand
+			$interact.rotation = v.angle() + PI/2
+			
+			pj.node_b = ""
+			if mounted:
+				state.set_linear_velocity(v + mounted.linear_velocity)
+			elif moving_area_body:
+				if moving_area_body is StaticBody2D:
+					state.set_linear_velocity(v)
+				else:
+					state.set_linear_velocity(v + moving_area_body.linear_velocity)
+			else:
+				state.set_linear_velocity(v)
+
 #	
 #	linear_velocity = linear_velocity + l.linear_velocity
 #	pass
@@ -165,11 +168,10 @@ func _on_mount_fndr_body_exited(body):
 
 func _on_Player_body_entered(body):
 	print(body.name)
-	pass # Replace with function body.
 
 func _on_ground_detector_area_entered(area):
 	moving_area_body = area.get_parent()
 
 func _on_ground_detector_area_exited(area):
-	$pj.node_b = "" #due to stuck
+	pj.node_b = "" #due to stuck
 	moving_area_body = null
