@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://wheelset.tscn" type="PackedScene" id=1]
+[ext_resource path="res://script/car_base.gd" type="Script" id=2]
+[ext_resource path="res://assets/open_van.png" type="Texture" id=3]
+[ext_resource path="res://hook.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/GTA2_CAR_53.png" type="Texture" id=5]
+[ext_resource path="res://assets/GTA2_CAR_49.png" type="Texture" id=6]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 21, 56 )
+
+[node name="car_base" type="RigidBody2D"]
+mass = 28.04
+script = ExtResource( 2 )
+__meta__ = {
+"type": "loco"
+}
+wheel_r = 5
+
+[node name="body" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="ws_front" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, -50 )
+mass = 45.83
+angular_damp = 100.0
+
+[node name="hook_front" parent="ws_front" instance=ExtResource( 4 )]
+position = Vector2( 0, -6 )
+rotation = -1.5708
+scale = Vector2( 1, 1.3 )
+
+[node name="ws_rear" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, 50 )
+mass = 40.17
+angular_damp = 100.0
+
+[node name="hook_rear" parent="ws_rear" instance=ExtResource( 4 )]
+position = Vector2( 0, 6 )
+rotation = 1.5708
+scale = Vector2( 1, 1.3 )
+
+[node name="interior" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="Gta2Car49" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 6 )
+
+[node name="Gta2Car53" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 5 )

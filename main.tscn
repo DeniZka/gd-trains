@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://kraken.tscn" type="PackedScene" id=1]
 [ext_resource path="res://script/old_line.gd" type="Script" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://assets/house/GTATIL1_91.bmp" type="Texture" id=13]
 [ext_resource path="res://script/turn_table.gd" type="Script" id=14]
 [ext_resource path="res://table_tip.tscn" type="PackedScene" id=15]
+[ext_resource path="res://car_base.tscn" type="PackedScene" id=16]
 
 [sub_resource type="Curve2D" id=5]
 bake_interval = 40.11
@@ -164,6 +165,17 @@ offset = 2155.25
 
 [node name="hull" parent="lines/c_line/PathFollow2D" instance=ExtResource( 9 )]
 
+[node name="PathFollow2D2" type="PathFollow2D" parent="lines/c_line"]
+position = Vector2( 1118.34, 474.64 )
+rotation = 2.83483
+offset = 1964.4
+
+[node name="car_base" parent="lines/c_line/PathFollow2D2" instance=ExtResource( 16 )]
+rotation = 1.5708
+z_index = 20
+wheel_gap = 25
+wheel_r = 5.0
+
 [node name="c_centr" type="Path2D" parent="lines"]
 self_modulate = Color( 1, 0.933333, 0.2, 0.666667 )
 position = Vector2( 75, 164 )
@@ -268,7 +280,7 @@ offset = 763.7
 
 [node name="hull" parent="lines/test/PathFollow2D" instance=ExtResource( 1 )]
 rotation = 3.14159
-mass = 117.87
+mass = 624.13
 car_ID = 5
 
 [node name="terminator" parent="lines/test" instance=ExtResource( 7 )]
@@ -311,7 +323,7 @@ offset = 574.25
 
 [node name="hull" parent="lines/Path2D2/car_poser6" instance=ExtResource( 1 )]
 rotation = 3.14159
-mass = 14.67
+mass = 67.61
 car_ID = 15
 got_engine = false
 

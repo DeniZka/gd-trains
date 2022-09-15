@@ -12,6 +12,7 @@ export var impassable: bool = true
 var f = 40000
 var picked = false
 var wheels = []
+var soft_qspd = 200 #speed which lower more soft wheels
 
 var mounted = null
 
@@ -80,11 +81,11 @@ func _ready():
 		get_node("loco").visible = false
 	else:
 		get_node("car").visible = false
-	
-	wheels.append(get_node("wheelL1"))
-	wheels.append(get_node("wheelL2"))
-	wheels.append(get_node("wheelR1"))
-	wheels.append(get_node("wheelR2"))
+	if $wheels:
+		var a = $wheels.get_children()
+		for n in a:
+			wheels.append(n)
+			
 	set_meta("type", "loco")
 	var l: Label = get_node("text_pose/id")
 	var s: String = "%04d" % car_ID
@@ -121,6 +122,15 @@ func no_force():
 	set_applied_force(Vector2(0, 0))
 
 func _physics_process(delta):
+	if linear_velocity.length_squared() < soft_qspd:
+		for w in wheels:
+			w.get_node("pj").softness = 0.5
+	else:
+		for w in wheels:
+			w.get_node("pj").softness = 0.04
+	if mounted:
+		print(linear_velocity.length_squared())
+	
 	if mounted:
 		if got_engine:
 			if Input.is_action_pressed("ui_up"):
